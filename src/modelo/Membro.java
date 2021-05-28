@@ -45,7 +45,7 @@ public class Membro {
     private String sexo;
     private String email;
     private String dizimista;
-    private String congregacao;
+    private Congregacao congregacao;
     private Date dataInicio;
     
 
@@ -532,16 +532,6 @@ public class Membro {
     /**
      * @return the congregacao
      */
-    public String getCongregacao() {
-        return congregacao;
-    }
-
-    /**
-     * @param congregacao the congregacao to set
-     */
-    public void setCongregacao(String congregacao) {
-        this.congregacao = congregacao;
-    }
 
     /**
      * @return the dataInicio
@@ -555,6 +545,20 @@ public class Membro {
      */
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
+    }
+
+    /**
+     * @return the congregacao
+     */
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    /**
+     * @param congregacao the congregacao to set
+     */
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
     }
 
 }

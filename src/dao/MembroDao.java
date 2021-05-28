@@ -10,9 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Congregacao;
 import modelo.Membro;
 
 public class MembroDao {
@@ -22,13 +27,14 @@ public class MembroDao {
     Connection con;
     PreparedStatement stm = null;
     ResultSet rs;
+    CongregacaoDao congregacaoDao = new CongregacaoDao();
 
     // INSERINDO NOVO CADASTRO /////////////////////////////////////////////////    
     public boolean insert(Membro membro) {
 
         String sql = "INSERT INTO membro (nome, dataNascimento, escolaridade, profissao, endereco, numero, bairro,"
                 + "cidade, estado, cep, telefone, naturalidade, rg, cpf, celular, pai, mae, estadoCivil, conjuge, cargo,"
-                + "foto, observacao, dataCadatro, status, igrejaBatismo, dataBatismo, pastorBatismo,sexo,email, congregacao, "
+                + "foto, observacao, dataCadatro, status, igrejaBatismo, dataBatismo, pastorBatismo,sexo,email, idCongregacao, "
                 + "dizimista,dataInicioIgreja) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -68,7 +74,7 @@ public class MembroDao {
             stm.setString(27, membro.getPastorBatismo());
             stm.setString(28, membro.getSexo());
             stm.setString(29, membro.getEmail());
-            stm.setString(30, membro.getCongregacao());
+            stm.setInt(30, membro.getCongregacao().getIdCongregacao());
             stm.setString(31, membro.getDizimista());
             stm.setString(32, strDf.format(membro.getDataInicio()));
 
@@ -89,7 +95,7 @@ public class MembroDao {
         String sql = "INSERT INTO membro SET nome=?, dataNascimento=?, escolaridade=?, profissao=?, endereco=?, numero=?, bairro=?,"
                 + "cidade=?, estado=?, cep=?, telefone=?, naturalidade=?, rg=?, cpf=?, celular=?, pai=?, mae=?, estadoCivil=?, conjuge=?, cargo=?,"
                 + "foto=?, observacao=?, dataCadatro=?, status=?, igrejaBatismo=?, dataBatismo=?, pastorBatismo=?, sexo=?, email=?"
-                + "congregacao=?, dizimista=?, dataIncioIgreja=? WHERE idMembro=?";
+                + "idCongregacao=?, dizimista=?, dataIncioIgreja=? WHERE idMembro=?";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
@@ -127,7 +133,7 @@ public class MembroDao {
             stm.setString(27, membro.getPastorBatismo());
             stm.setString(28, membro.getSexo());
             stm.setString(29, membro.getEmail());
-            stm.setString(30, membro.getCongregacao());
+            stm.setInt(30, membro.getCongregacao().getIdCongregacao());
             stm.setString(31, membro.getDizimista());
             stm.setString(32, strDf.format(membro.getDataInicio()));
             stm.setInt(33, membro.getIdMembro());
@@ -203,7 +209,10 @@ public class MembroDao {
                 men.setPastorBatismo(rs.getString("pastorBatismo"));
                 men.setSexo(rs.getString("sexo"));
                 men.setEmail(rs.getString("email"));
-                men.setCongregacao(rs.getString("congregacao"));
+                //-------------------------------------------
+                Congregacao congregacao = congregacaoDao.getCongregacao(rs.getInt("idCongregacao"));
+                //-------------------------------------------
+                men.setCongregacao(congregacao);
                 men.setDizimista(rs.getString("dizimista"));
                 men.setDataInicio(rs.getDate("dataInicioIgreja"));
 
@@ -236,7 +245,11 @@ public class MembroDao {
                 men = new Membro();
                 men.setIdMembro(rs.getInt("idMembro"));
                 men.setNome(rs.getString("nome"));
-                men.setDataNascimento(rs.getDate("dataNascimento"));
+//                try {
+//                    men.setDataNascimento(strDf.parse(rs.getString("dataNascimento")));
+//                } catch (ParseException ex) {
+//                }
+
                 men.setEscolaridade(rs.getString("escolaridade"));
                 men.setProfissao(rs.getString("profissao"));
                 men.setEndereco(rs.getString("endereco"));
@@ -244,8 +257,7 @@ public class MembroDao {
                 men.setBairro(rs.getString("bairro"));
                 men.setCidade(rs.getString("cidade"));
                 men.setEstado(rs.getString("estado"));
-                men.setCep(rs.getString("cep"));
-                men.setDataNascimento(rs.getDate("dataNascimento"));
+                men.setCep(rs.getString("cep")); 
                 men.setRg(rs.getString("rg"));
                 men.setCpf(rs.getString("cpf"));
                 men.setCelular(rs.getString("celular"));
@@ -256,16 +268,27 @@ public class MembroDao {
                 men.setCargo(rs.getString("cargo"));
                 men.setFoto(rs.getBytes("foto"));
                 men.setObservacao(rs.getString("observacao"));
-                men.setDataCadatro(rs.getDate("dataCadastro"));
+
+//                try {
+//                    men.setDataCadatro(strDf.parse(rs.getString("dataCadastro")));
+//                } catch (ParseException ex) {
+//                }
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
                 men.setDataBatismo(rs.getDate("dataBatismo"));
                 men.setPastorBatismo(rs.getString("pastorBatismo"));
                 men.setSexo(rs.getString("sexo"));
                 men.setEmail(rs.getString("email"));
-                men.setCongregacao(rs.getString("congregacao"));
+                //-------------------------------------------
+                Congregacao congregacao = congregacaoDao.getCongregacao(rs.getInt("idCongregacao"));
+                //-------------------------------------------
+                men.setCongregacao(congregacao);
                 men.setDizimista(rs.getString("dizimista"));
-                 men.setDataInicio(rs.getDate("dataInicioIgreja"));
+
+//                try {
+//                    men.setDataInicio(strDf.parse(rs.getString("dataInicioIgreja")));
+//                } catch (ParseException ex) {
+//                }
                 lista.add(men);
 
             }

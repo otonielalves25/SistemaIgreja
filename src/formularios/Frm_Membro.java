@@ -5,6 +5,7 @@
  */
 package formularios;
 
+import dao.CongregacaoDao;
 import dao.MembroDao;
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -23,8 +25,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import modelo.Congregacao;
 import modelo.Membro;
-import util.Datas;
 import util.ManipulaImagem;
 
 /**
@@ -32,16 +34,22 @@ import util.ManipulaImagem;
  * @author Tony
  */
 public class Frm_Membro extends javax.swing.JInternalFrame {
-
+    
+    //--------------------------------------
     MembroDao membroDao = new MembroDao();
+    CongregacaoDao congrecaoDao;
     DateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
     Membro membro;
     public boolean novo;
+    // VARIAVEL DO PROJETO //
+    int congregacao_id;
 
     public Frm_Membro() {
         initComponents();
+        congrecaoDao = new CongregacaoDao();
         janelaFoto.setIcon(new ImageIcon());
         txtDataCadastro.setDate(new Date());
+        carregaCombobox();
 
     }
 
@@ -70,12 +78,12 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         cboStatus = new javax.swing.JComboBox<>();
         jLabel28 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
-        txtCongregacao = new javax.swing.JTextField();
         ckDizimista = new javax.swing.JCheckBox();
         jLabel11 = new javax.swing.JLabel();
         txtDataCongrega = new com.toedter.calendar.JDateChooser();
         jLabel34 = new javax.swing.JLabel();
         txtIdade = new javax.swing.JTextField();
+        cboCongregacao = new javax.swing.JComboBox<>();
         janelaFoto = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -197,12 +205,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         jLabel33.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel33.setText("Congregação:");
 
-        txtCongregacao.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtCongregacaoFocusGained(evt);
-            }
-        });
-
         ckDizimista.setBackground(new java.awt.Color(255, 255, 255));
         ckDizimista.setText("Dizimista?");
 
@@ -226,9 +228,20 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel33)
-                            .addComponent(cboCargo, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel34)
+                                .addGap(0, 26, Short.MAX_VALUE))
+                            .addComponent(txtDataCongrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cboCongregacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboCargo, 0, 276, Short.MAX_VALUE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(99, 99, 99)
@@ -244,23 +257,12 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11)
-                                    .addComponent(txtIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txtCongregacao, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addComponent(ckDizimista)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel34)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtDataCongrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(txtIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(ckDizimista)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -298,8 +300,8 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCongregacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ckDizimista)))
+                            .addComponent(ckDizimista)
+                            .addComponent(cboCongregacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtDataCongrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -844,12 +846,14 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
         // seta valores no usuario /////////////////////////////////////////////
         membro = new Membro();
+        Congregacao congregacao = (Congregacao) cboCongregacao.getSelectedItem();
+        
         membro.setNome(txtNome.getText());
         membro.setDataNascimento(txtDataNascimento.getDate());
         membro.setCargo(cboCargo.getSelectedItem().toString());
         membro.setFoto(converteFotoParaBanco(janelaFoto));
-        membro.setSexo(spsSexo.getValue().toString());
-        membro.setCongregacao(txtCongregacao.getText());
+        membro.setSexo(spsSexo.getValue().toString());        
+        membro.setCongregacao(congregacao);
         membro.setStatus(cboStatus.getSelectedItem().toString());
         String dizimista = ckDizimista.isSelected() ? "S" : "N";
         membro.setDizimista(dizimista);
@@ -941,17 +945,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_txtDataNascimentoFocusLost
 
-    private void txtCongregacaoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCongregacaoFocusGained
-        // TODO add your handling code here:
-
-        if (null != txtDataNascimento.getDate()) {
-            String dataNasc = simpleDate.format(txtDataNascimento.getDate());
-            System.out.println(dataNasc);
-            int idade = Datas.calcIdade(dataNasc);
-            txtIdade.setText("" + idade);
-        }
-    }//GEN-LAST:event_txtCongregacaoFocusGained
-
     //FUNÇÃO LIMPAR CAMPOS
     private void limpar() {
 
@@ -980,7 +973,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         txtPastorBatismo.setText("");
         txtObservacao.setText("");
         janelaFoto.setText("");
-        txtCongregacao.setText("");
+        cboCongregacao.setSelectedItem(null);
         txtEmail.setText("");
         ckDizimista.setSelected(false);
         janelaFoto.setIcon(new ImageIcon());
@@ -989,12 +982,26 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         txtDataCongrega.setDate(null);
 
     }
+    
+    // CARREGA COMBO BOX COM OBJETO CONGREGAÇÃO
+    
+    private void carregaCombobox(){
+        
+        ArrayList<Congregacao> lista = congrecaoDao.getListaCongregacoes();
+
+        for (int i = 0; i < lista.size(); i++) {
+            cboCongregacao.addItem(lista.get(i));            
+        }
+        
+        
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cboCargo;
+    private javax.swing.JComboBox<Object> cboCongregacao;
     private javax.swing.JComboBox<String> cboEscolaridade;
     private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JComboBox<String> cboEstadoCivil;
@@ -1046,7 +1053,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtCodigo;
-    private javax.swing.JTextField txtCongregacao;
     private javax.swing.JTextField txtConjuge;
     private javax.swing.JFormattedTextField txtCpf;
     private com.toedter.calendar.JDateChooser txtDataBatismo;

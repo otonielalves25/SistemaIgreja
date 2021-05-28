@@ -5,21 +5,26 @@
  */
 package formularios;
 
+import dao.MembroDao;
 import dao.UsuarioDao;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelo.SessaoUsuario;
-import modelo.Usuario;
+import modelo.Membro;
+
 
 /**
  *
  * @author Tony
  */
 public class Frm_MembroConsulta extends javax.swing.JDialog {
-
+    
+    DateFormat strDf = new SimpleDateFormat("yyyy-MM-dd");
     DefaultTableModel tabelaModelo;
-    UsuarioDao usuarioDao = new UsuarioDao();
+    UsuarioDao usuarioDao; 
+    MembroDao membroDao;
 
     /**
      * Creates new form Frm_UsuarioConsulta
@@ -27,6 +32,8 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     public Frm_MembroConsulta(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        usuarioDao = new UsuarioDao();
+        membroDao = new MembroDao();
         tabelaModelo = (DefaultTableModel) grelhaPesquisaUsuario.getModel();
         carregaTabela();
 
@@ -333,16 +340,20 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     //FUNÇÃO QUE CARREAGO OS AS TABELAS
     private void carregaTabela() {
 
-        ArrayList<Usuario> lista = usuarioDao.getListaUsuarios(txtPesquisa.getText());
+        ArrayList<Membro> lista = membroDao.getListagem(txtPesquisa.getText());
         tabelaModelo.setNumRows(0);
-        for (Usuario usuario : lista) {
+        for (Membro membro : lista) {
+            //String dataNascimento = strDf.format(membro.getDataNascimento());
+            String nome = membro.getCongregacao().getNomeCongregacao();
             tabelaModelo.addRow(new Object[]{
-                usuario.getIdUsuario(),
-                usuario.getNome(),
-                usuario.getLogin(),
-                usuario.getPrevilegio(),});
-
+                membro.getIdMembro(),
+                //dataNascimento,
+                nome,
+               
+            });
+            
         }
+        lblQuantidade.setText(lista.size() + " Localidados.");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
