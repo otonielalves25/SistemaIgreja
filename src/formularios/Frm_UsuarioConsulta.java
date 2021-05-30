@@ -86,6 +86,7 @@ public class Frm_UsuarioConsulta extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel2.setText("Pesquisa:");
 
+        grelhaPesquisaUsuario.setBackground(new java.awt.Color(204, 255, 204));
         grelhaPesquisaUsuario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

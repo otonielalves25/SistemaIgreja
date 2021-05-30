@@ -16,7 +16,7 @@ public class Membro {
 
     private int idMembro;
     private String nome;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String escolaridade;
     private String profissao;
     private String endereco;
@@ -37,25 +37,25 @@ public class Membro {
     private String cargo;
     private byte[] foto;
     private String observacao;
-    private Date dataCadatro;
+    private String dataCadatro;
     private String status;
     private String igrejaBatismo;
-    private Date dataBatismo;
+    private String dataBatismo;
     private String pastorBatismo;
     private String sexo;
     private String email;
     private String dizimista;
     private Congregacao congregacao;
-    private Date dataInicio;
+    private String dataInicio;
     
 
     public Membro() {
     }
 
-    public Membro(int idMembro, String nome, Date dataNascimento, String escolaridade, String profissao, String endereco, String numero,
+    public Membro(int idMembro, String nome, String dataNascimento, String escolaridade, String profissao, String endereco, String numero,
             String bairro, String cidade, String estado, String cep, String telefone, String naturalidade, String rg, String cpf,
             String celular, String pai, String mae, String estadoCivil, String conjuge, String cargo, byte[] foto, String observacao,
-            Date dataCadatro, String status, String igrejaBatismo, Date dataBatismo, String pastorBatismo) {
+            String dataCadatro, String status, String igrejaBatismo, String dataBatismo, String pastorBatismo) {
         this.idMembro = idMembro;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -385,14 +385,14 @@ public class Membro {
     /**
      * @return the dataCadatro
      */
-    public Date getDataCadatro() {
+    public String getDataCadatro() {
         return dataCadatro;
     }
 
     /**
      * @param dataCadatro the dataCadatro to set
      */
-    public void setDataCadatro(Date dataCadatro) {
+    public void setDataCadatro(String dataCadatro) {
         this.dataCadatro = dataCadatro;
     }
 
@@ -427,14 +427,14 @@ public class Membro {
     /**
      * @return the dataBatismo
      */
-    public Date getDataBatismo() {
+    public String getDataBatismo() {
         return dataBatismo;
     }
 
     /**
      * @param dataBatismo the dataBatismo to set
      */
-    public void setDataBatismo(Date dataBatismo) {
+    public void setDataBatismo(String dataBatismo) {
         this.dataBatismo = dataBatismo;
     }
 
@@ -462,14 +462,14 @@ public class Membro {
     /**
      * @return the dataNascimento
      */
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
     /**
      * @param dataNascimento the dataNascimento to set
      */
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -536,14 +536,14 @@ public class Membro {
     /**
      * @return the dataInicio
      */
-    public Date getDataInicio() {
+    public String getDataInicio() {
         return dataInicio;
     }
 
     /**
      * @param dataInicio the dataInicio to set
      */
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(String dataInicio) {
         this.dataInicio = dataInicio;
     }
 

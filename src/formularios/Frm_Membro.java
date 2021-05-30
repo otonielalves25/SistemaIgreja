@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.Congregacao;
 import modelo.Membro;
+import util.Datas;
 import util.ManipulaImagem;
 
 /**
@@ -34,7 +35,7 @@ import util.ManipulaImagem;
  * @author Tony
  */
 public class Frm_Membro extends javax.swing.JInternalFrame {
-    
+
     //--------------------------------------
     MembroDao membroDao = new MembroDao();
     CongregacaoDao congrecaoDao;
@@ -218,6 +219,12 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         txtIdade.setForeground(new java.awt.Color(0, 102, 51));
         txtIdade.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtIdade.setEnabled(false);
+
+        cboCongregacao.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cboCongregacaoFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -847,12 +854,12 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         // seta valores no usuario /////////////////////////////////////////////
         membro = new Membro();
         Congregacao congregacao = (Congregacao) cboCongregacao.getSelectedItem();
-        
+
         membro.setNome(txtNome.getText());
-        membro.setDataNascimento(txtDataNascimento.getDate());
+        membro.setDataNascimento(simpleDate.format(txtDataNascimento.getDate()));
         membro.setCargo(cboCargo.getSelectedItem().toString());
         membro.setFoto(converteFotoParaBanco(janelaFoto));
-        membro.setSexo(spsSexo.getValue().toString());        
+        membro.setSexo(spsSexo.getValue().toString());
         membro.setCongregacao(congregacao);
         membro.setStatus(cboStatus.getSelectedItem().toString());
         String dizimista = ckDizimista.isSelected() ? "S" : "N";
@@ -865,7 +872,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         membro.setTelefone(txtTelefone.getText());
         membro.setEmail(txtEmail.getText());
         membro.setEscolaridade(cboEscolaridade.getSelectedItem().toString());
-        membro.setDataCadatro(txtDataCadastro.getDate());
+        membro.setDataCadatro(simpleDate.format(txtDataCadastro.getDate()));
         membro.setNaturalidade(txtNaturalidade.getText());
         membro.setProfissao(txtProfissao.getText());
         membro.setRg(txtRg.getText());
@@ -874,11 +881,15 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         membro.setMae(txtNomeMae.getText());
         membro.setEstadoCivil(cboEstadoCivil.getSelectedItem().toString());
         membro.setConjuge(txtConjuge.getText());
-        membro.setDataBatismo(txtDataBatismo.getDate());
+        try {
+            membro.setDataBatismo(simpleDate.format(txtDataBatismo.getDate()));
+        } catch (Exception e) {
+        }
+
         membro.setIgrejaBatismo(txtNomeIgreja.getText());
         membro.setPastorBatismo(txtPastorBatismo.getText());
         membro.setObservacao(txtObservacao.getText());
-        membro.setDataInicio(txtDataCongrega.getDate());
+        membro.setDataInicio(simpleDate.format(txtDataCongrega.getDate()));
 
         if (novo) {
             //inserindo novo no banco
@@ -943,7 +954,18 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     private void txtDataNascimentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDataNascimentoFocusLost
         // TODO add your handling code here:
 
+
     }//GEN-LAST:event_txtDataNascimentoFocusLost
+
+    private void cboCongregacaoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboCongregacaoFocusGained
+        // TODO add your handling code here:
+        String dataNascimento = simpleDate.format(txtDataNascimento.getDate());
+        if (!dataNascimento.isEmpty()) {
+            txtIdade.setText(Datas.calcIdade(dataNascimento) + "");
+        }
+
+
+    }//GEN-LAST:event_cboCongregacaoFocusGained
 
     //FUNÇÃO LIMPAR CAMPOS
     private void limpar() {
@@ -982,18 +1004,16 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         txtDataCongrega.setDate(null);
 
     }
-    
+
     // CARREGA COMBO BOX COM OBJETO CONGREGAÇÃO
-    
-    private void carregaCombobox(){
-        
+    private void carregaCombobox() {
+
         ArrayList<Congregacao> lista = congrecaoDao.getListaCongregacoes();
 
         for (int i = 0; i < lista.size(); i++) {
-            cboCongregacao.addItem(lista.get(i));            
+            cboCongregacao.addItem(lista.get(i));
         }
-        
-        
+
     }
 
 
