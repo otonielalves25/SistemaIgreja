@@ -10,12 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import modelo.Congregacao;
 import modelo.Membro;
@@ -34,7 +32,7 @@ public class MembroDao {
 
         String sql = "INSERT INTO membro (nome, dataNascimento, escolaridade, profissao, endereco, numero, bairro,"
                 + "cidade, estado, cep, telefone, naturalidade, rg, cpf, celular, pai, mae, estadoCivil, conjuge, cargo,"
-                + "foto, observacao, dataCadatro, status, igrejaBatismo, dataBatismo, pastorBatismo,sexo,email, idCongregacao, "
+                + "foto, observacao, dataCadastro, status, igrejaBatismo, dataBatismo, pastorBatismo,sexo,email, idCongregacao, "
                 + "dizimista,dataInicioIgreja) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -63,7 +61,7 @@ public class MembroDao {
             stm.setString(20, membro.getCargo());
             stm.setBytes(21, membro.getFoto());
             stm.setString(22, membro.getObservacao());
-            stm.setString(23, membro.getDataCadatro());
+            stm.setString(23, membro.getDataCadastro());
             stm.setString(24, membro.getStatus());
             stm.setString(25, membro.getIgrejaBatismo());
             stm.setString(26, membro.getDataBatismo());
@@ -90,7 +88,7 @@ public class MembroDao {
 
         String sql = "INSERT INTO membro SET nome=?, dataNascimento=?, escolaridade=?, profissao=?, endereco=?, numero=?, bairro=?,"
                 + "cidade=?, estado=?, cep=?, telefone=?, naturalidade=?, rg=?, cpf=?, celular=?, pai=?, mae=?, estadoCivil=?, conjuge=?, cargo=?,"
-                + "foto=?, observacao=?, dataCadatro=?, status=?, igrejaBatismo=?, dataBatismo=?, pastorBatismo=?, sexo=?, email=?"
+                + "foto=?, observacao=?, dataCadastro=?, status=?, igrejaBatismo=?, dataBatismo=?, pastorBatismo=?, sexo=?, email=?"
                 + "idCongregacao=?, dizimista=?, dataIncioIgreja=? WHERE idMembro=?";
 
         try {
@@ -118,7 +116,7 @@ public class MembroDao {
             stm.setString(20, membro.getCargo());
             stm.setBytes(21, membro.getFoto());
             stm.setString(22, membro.getObservacao());
-            stm.setString(23, membro.getDataCadatro());
+            stm.setString(23, membro.getDataCadastro());
             stm.setString(24, membro.getStatus());
             stm.setString(25, membro.getIgrejaBatismo());
             stm.setString(26, membro.getDataBatismo());
@@ -194,7 +192,7 @@ public class MembroDao {
                 men.setCargo(rs.getString("cargo"));
                 men.setFoto(rs.getBytes("foto"));
                 men.setObservacao(rs.getString("observacao"));
-                men.setDataCadatro(rs.getString("dataCadastro"));
+                men.setDataCadastro(rs.getString("dataCadastro"));
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
                 men.setDataBatismo(rs.getString("dataBatismo"));
@@ -257,7 +255,7 @@ public class MembroDao {
                 men.setCargo(rs.getString("cargo"));
                 men.setFoto(rs.getBytes("foto"));
                 men.setObservacao(rs.getString("observacao"));
-                men.setDataCadatro(rs.getString("dataCadastro"));
+                men.setDataCadastro(rs.getString("dataCadastro"));
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
                 men.setDataBatismo(rs.getString("dataBatismo"));
@@ -284,6 +282,33 @@ public class MembroDao {
         }
 
         return lista;
+    }
+
+    // RETORNA ID POR NOME ////////////////////////////////////////////////////
+    public int getIdMembro(String nome) {
+        int codigo = 0;
+        String sql = "SELECT * from membro where nome = ?";
+
+        try {
+            con = conexao.ConexaoSqLite.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, nome);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                codigo = rs.getInt("idMembro");
+
+            }
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao retornar 1 usuario Dao. " + e);
+
+        }
+
+        return codigo;
     }
 
 }

@@ -5,14 +5,11 @@
  */
 package modelo;
 
-import java.util.Date;
 /**
  *
  * @author Tony
  */
 public class Membro {
-
-
 
     private int idMembro;
     private String nome;
@@ -37,7 +34,7 @@ public class Membro {
     private String cargo;
     private byte[] foto;
     private String observacao;
-    private String dataCadatro;
+    private String dataCadastro;
     private String status;
     private String igrejaBatismo;
     private String dataBatismo;
@@ -47,15 +44,25 @@ public class Membro {
     private String dizimista;
     private Congregacao congregacao;
     private String dataInicio;
-    
 
     public Membro() {
     }
 
+    public Membro(int idMembro) {
+        this.idMembro = idMembro;
+
+    }
+        public Membro(int idMembro, String nome) {
+        this.idMembro = idMembro;
+        this.nome = nome;
+
+    }
+
+
     public Membro(int idMembro, String nome, String dataNascimento, String escolaridade, String profissao, String endereco, String numero,
             String bairro, String cidade, String estado, String cep, String telefone, String naturalidade, String rg, String cpf,
             String celular, String pai, String mae, String estadoCivil, String conjuge, String cargo, byte[] foto, String observacao,
-            String dataCadatro, String status, String igrejaBatismo, String dataBatismo, String pastorBatismo) {
+            String dataCadastro, String status, String igrejaBatismo, String dataBatismo, String pastorBatismo) {
         this.idMembro = idMembro;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -79,13 +86,15 @@ public class Membro {
         this.cargo = cargo;
         this.foto = foto;
         this.observacao = observacao;
-        this.dataCadatro = dataCadatro;
+        this.dataCadastro = dataCadastro;
         this.status = status;
         this.igrejaBatismo = igrejaBatismo;
         this.dataBatismo = dataBatismo;
         this.pastorBatismo = pastorBatismo;
-        
+
     }
+    
+    
 
     /**
      * @return the idMembro
@@ -96,10 +105,14 @@ public class Membro {
 
     /**
      * @param idMembro the idMembro to set
+     *
      */
     public void setIdMembro(int idMembro) {
         this.idMembro = idMembro;
+
     }
+
+
 
     /**
      * @return the nome
@@ -114,7 +127,6 @@ public class Membro {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 
     /**
      * @return the escolaridade
@@ -385,15 +397,15 @@ public class Membro {
     /**
      * @return the dataCadatro
      */
-    public String getDataCadatro() {
-        return dataCadatro;
+    public String getDataCadastro() {
+        return dataCadastro;
     }
 
     /**
-     * @param dataCadatro the dataCadatro to set
+     * @param dataCadastro the dataCadastro to set
      */
-    public void setDataCadatro(String dataCadatro) {
-        this.dataCadatro = dataCadatro;
+    public void setDataCadastro(String dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     /**
@@ -457,8 +469,6 @@ public class Membro {
         return nome;
     }
 
-
-
     /**
      * @return the dataNascimento
      */
@@ -514,8 +524,8 @@ public class Membro {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-        /**
+
+    /**
      * @return the dizimista
      */
     public String getDizimista() {
@@ -532,7 +542,6 @@ public class Membro {
     /**
      * @return the congregacao
      */
-
     /**
      * @return the dataInicio
      */

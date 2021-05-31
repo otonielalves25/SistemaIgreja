@@ -872,7 +872,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         membro.setTelefone(txtTelefone.getText());
         membro.setEmail(txtEmail.getText());
         membro.setEscolaridade(cboEscolaridade.getSelectedItem().toString());
-        membro.setDataCadatro(simpleDate.format(txtDataCadastro.getDate()));
+        membro.setDataCadastro(simpleDate.format(txtDataCadastro.getDate()));
         membro.setNaturalidade(txtNaturalidade.getText());
         membro.setProfissao(txtProfissao.getText());
         membro.setRg(txtRg.getText());
