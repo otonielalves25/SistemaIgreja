@@ -78,7 +78,7 @@ public class Frm_UsuarioCadastro extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel5.setText("Confirma Senha:");
 
-        cboPrevilegio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Adminstrador", "Usuário" }));
+        cboPrevilegio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Administrador", "Usuário" }));
 
         jLabel6.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel6.setText("Previlégio:");

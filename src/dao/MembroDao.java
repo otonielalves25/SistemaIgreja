@@ -6,21 +6,29 @@
 package dao;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
+;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import modelo.Congregacao;
 import modelo.Membro;
 
+
+
 public class MembroDao {
 
-    DateFormat strDf = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 
     Connection con;
     PreparedStatement stm = null;
@@ -40,7 +48,7 @@ public class MembroDao {
             con = conexao.ConexaoSqLite.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, membro.getNome());
-            stm.setString(2, membro.getDataNascimento());
+            stm.setString(2, sdf.format(membro.getDataNascimento()));
             stm.setString(3, membro.getEscolaridade());
             stm.setString(4, membro.getProfissao());
             stm.setString(5, membro.getEndereco());
@@ -61,16 +69,31 @@ public class MembroDao {
             stm.setString(20, membro.getCargo());
             stm.setBytes(21, membro.getFoto());
             stm.setString(22, membro.getObservacao());
-            stm.setString(23, membro.getDataCadastro());
+            if (membro.getDataCadastro() != null) {
+                stm.setString(23, sdf.format(membro.getDataCadastro()));
+            } else {
+                stm.setString(23, "");
+            }
+
             stm.setString(24, membro.getStatus());
             stm.setString(25, membro.getIgrejaBatismo());
-            stm.setString(26, membro.getDataBatismo());
+
+            if (membro.getDataBatismo() != null) {
+                stm.setString(26, sdf.format(membro.getDataBatismo()));
+            } else {
+                stm.setString(26, "");
+            }
+
             stm.setString(27, membro.getPastorBatismo());
             stm.setString(28, membro.getSexo());
             stm.setString(29, membro.getEmail());
             stm.setInt(30, membro.getCongregacao().getIdCongregacao());
             stm.setString(31, membro.getDizimista());
-            stm.setString(32, membro.getDataInicio());
+            if (membro.getDataInicio() != null) {
+                stm.setString(32, sdf.format(membro.getDataInicio()));
+            } else {
+                stm.setString(32, "");
+            }
 
             stm.execute();
             con.close();
@@ -86,16 +109,16 @@ public class MembroDao {
     // ALTERA CADASTRO /////////////////////////////////////////////////////////    
     public boolean update(Membro membro) {
 
-        String sql = "INSERT INTO membro SET nome=?, dataNascimento=?, escolaridade=?, profissao=?, endereco=?, numero=?, bairro=?,"
+        String sql = "UPDATE membro SET nome=?, dataNascimento=?, escolaridade=?, profissao=?, endereco=?, numero=?, bairro=?,"
                 + "cidade=?, estado=?, cep=?, telefone=?, naturalidade=?, rg=?, cpf=?, celular=?, pai=?, mae=?, estadoCivil=?, conjuge=?, cargo=?,"
-                + "foto=?, observacao=?, dataCadastro=?, status=?, igrejaBatismo=?, dataBatismo=?, pastorBatismo=?, sexo=?, email=?"
-                + "idCongregacao=?, dizimista=?, dataIncioIgreja=? WHERE idMembro=?";
+                + "foto=?, observacao=?, dataCadastro=?, status=?, igrejaBatismo=?, dataBatismo=?, pastorBatismo=?, sexo=?, email=?,"
+                + "idCongregacao=?, dizimista=?, dataInicioIgreja=? WHERE idMembro=?";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, membro.getNome());
-            stm.setString(2, membro.getDataNascimento());
+            stm.setString(2, sdf.format(membro.getDataNascimento()));
             stm.setString(3, membro.getEscolaridade());
             stm.setString(4, membro.getProfissao());
             stm.setString(5, membro.getEndereco());
@@ -116,16 +139,16 @@ public class MembroDao {
             stm.setString(20, membro.getCargo());
             stm.setBytes(21, membro.getFoto());
             stm.setString(22, membro.getObservacao());
-            stm.setString(23, membro.getDataCadastro());
+            stm.setString(23, sdf.format(membro.getDataCadastro()));
             stm.setString(24, membro.getStatus());
             stm.setString(25, membro.getIgrejaBatismo());
-            stm.setString(26, membro.getDataBatismo());
+            stm.setString(26, sdf.format(membro.getDataBatismo()));
             stm.setString(27, membro.getPastorBatismo());
             stm.setString(28, membro.getSexo());
             stm.setString(29, membro.getEmail());
             stm.setInt(30, membro.getCongregacao().getIdCongregacao());
             stm.setString(31, membro.getDizimista());
-            stm.setString(32, membro.getDataInicio());
+            stm.setString(32, sdf.format(membro.getDataInicio()));
             stm.setInt(33, membro.getIdMembro());
 
             stm.execute();
@@ -140,7 +163,7 @@ public class MembroDao {
 
     // EXCLUIR CADASTRO ////////////////////////////////////////////////////////
     public boolean delete(int codigo) {
-        String sql = "DELETE from membro where idMembro= ?";
+        String sql = "DELETE FROM membro WHERE idMembro= ?";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
@@ -172,7 +195,11 @@ public class MembroDao {
                 men = new Membro();
                 men.setIdMembro(rs.getInt("idMembro"));
                 men.setNome(rs.getString("nome"));
-                men.setDataNascimento(rs.getString("dataNascimento"));
+                if (rs.getString("dataNascimento") != null) {
+                    men.setDataNascimento(sdf.parse(rs.getString("dataNascimento")));
+                } else {
+                    men.setDataNascimento(null);
+                }
                 men.setEscolaridade(rs.getString("escolaridade"));
                 men.setProfissao(rs.getString("profissao"));
                 men.setEndereco(rs.getString("endereco"));
@@ -180,8 +207,10 @@ public class MembroDao {
                 men.setBairro(rs.getString("bairro"));
                 men.setCidade(rs.getString("cidade"));
                 men.setEstado(rs.getString("estado"));
+                men.setTelefone(rs.getString("telefone"));
+                men.setNaturalidade(rs.getString("naturalidade"));
+                
                 men.setCep(rs.getString("cep"));
-                men.setDataNascimento(rs.getString("dataNascimento"));
                 men.setRg(rs.getString("rg"));
                 men.setCpf(rs.getString("cpf"));
                 men.setCelular(rs.getString("celular"));
@@ -192,10 +221,21 @@ public class MembroDao {
                 men.setCargo(rs.getString("cargo"));
                 men.setFoto(rs.getBytes("foto"));
                 men.setObservacao(rs.getString("observacao"));
-                men.setDataCadastro(rs.getString("dataCadastro"));
+
+                if (rs.getString("dataCadastro") != null) {
+                    men.setDataCadastro(sdf.parse(rs.getString("dataCadastro")));
+                } else {
+                    men.setDataCadastro(null);
+                }
+
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
-                men.setDataBatismo(rs.getString("dataBatismo"));
+
+                if (rs.getString("dataBatismo") != null) {
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
+                } else {
+                    men.setDataBatismo(null);
+                }
                 men.setPastorBatismo(rs.getString("pastorBatismo"));
                 men.setSexo(rs.getString("sexo"));
                 men.setEmail(rs.getString("email"));
@@ -204,7 +244,11 @@ public class MembroDao {
                 //-------------------------------------------
                 men.setCongregacao(congregacao);
                 men.setDizimista(rs.getString("dizimista"));
-                men.setDataInicio(rs.getString("dataInicioIgreja"));
+                if (rs.getString("dataInicioIgreja") != null) {
+                    men.setDataInicio(sdf.parse(rs.getString("dataInicioIgreja")));
+                } else {
+                    men.setDataInicio(null);
+                }
 
             }
 
@@ -214,6 +258,8 @@ public class MembroDao {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao retornar 1 usuario Dao. " + e);
 
+        } catch (ParseException ex) {
+            Logger.getLogger(MembroDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return men;
@@ -235,7 +281,11 @@ public class MembroDao {
                 men = new Membro();
                 men.setIdMembro(rs.getInt("idMembro"));
                 men.setNome(rs.getString("nome"));
-                men.setDataNascimento(rs.getString("dataNascimento"));
+                if (rs.getString("dataNascimento") != null) {
+                    men.setDataNascimento(sdf.parse(rs.getString("dataNascimento")));
+                } else {
+                    men.setDataNascimento(null);
+                }
                 men.setEscolaridade(rs.getString("escolaridade"));
                 men.setProfissao(rs.getString("profissao"));
                 men.setEndereco(rs.getString("endereco"));
@@ -243,8 +293,9 @@ public class MembroDao {
                 men.setBairro(rs.getString("bairro"));
                 men.setCidade(rs.getString("cidade"));
                 men.setEstado(rs.getString("estado"));
+                 men.setTelefone(rs.getString("telefone"));
+                men.setNaturalidade(rs.getString("naturalidade"));
                 men.setCep(rs.getString("cep"));
-                men.setDataNascimento(rs.getString("dataNascimento"));
                 men.setRg(rs.getString("rg"));
                 men.setCpf(rs.getString("cpf"));
                 men.setCelular(rs.getString("celular"));
@@ -255,10 +306,21 @@ public class MembroDao {
                 men.setCargo(rs.getString("cargo"));
                 men.setFoto(rs.getBytes("foto"));
                 men.setObservacao(rs.getString("observacao"));
-                men.setDataCadastro(rs.getString("dataCadastro"));
+
+                if (rs.getString("dataCadastro") != null) {
+                    men.setDataCadastro(sdf.parse(rs.getString("dataCadastro")));
+                } else {
+                    men.setDataCadastro(null);
+                }
+
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
-                men.setDataBatismo(rs.getString("dataBatismo"));
+
+                if (rs.getString("dataBatismo") != null) {
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
+                } else {
+                    men.setDataBatismo(null);
+                }
                 men.setPastorBatismo(rs.getString("pastorBatismo"));
                 men.setSexo(rs.getString("sexo"));
                 men.setEmail(rs.getString("email"));
@@ -267,7 +329,11 @@ public class MembroDao {
                 //-------------------------------------------
                 men.setCongregacao(congregacao);
                 men.setDizimista(rs.getString("dizimista"));
-                men.setDataInicio(rs.getString("dataInicioIgreja"));
+                if (rs.getString("dataInicioIgreja") != null) {
+                    men.setDataInicio(sdf.parse(rs.getString("dataInicioIgreja")));
+                } else {
+                    men.setDataInicio(null);
+                }
 
                 lista.add(men);
 
@@ -279,6 +345,8 @@ public class MembroDao {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao retornar lista membro Dao. " + e);
 
+        } catch (ParseException ex) {
+            Logger.getLogger(MembroDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return lista;

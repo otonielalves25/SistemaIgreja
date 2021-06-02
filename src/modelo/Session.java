@@ -9,7 +9,7 @@ package modelo;
  *
  * @author Tony
  */
-public class SessaoUsuario {
+public class Session {
     
     private static int idUsuario;
     private static String nomeUsuario;

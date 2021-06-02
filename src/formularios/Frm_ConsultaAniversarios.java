@@ -9,7 +9,7 @@ import dao.UsuarioDao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import modelo.SessaoUsuario;
+import modelo.Session;
 import modelo.Usuario;
 
 

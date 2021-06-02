@@ -5,7 +5,7 @@
  */
 package formularios;
 
-import modelo.SessaoUsuario;
+import modelo.Session;
 import util.CentralizarFormulario;
 
 /**
@@ -21,7 +21,7 @@ public class Frm_Principal extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         initComponents();
         //PEGA VALOR DA SESSÃO
-        lblUsuarioLogado.setText(SessaoUsuario.getNomeUsuario());
+        lblUsuarioLogado.setText(Session.getNomeUsuario());
 
     }
 
@@ -47,6 +47,7 @@ public class Frm_Principal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -168,6 +169,14 @@ public class Frm_Principal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
+        jMenuItem4.setText("Membro ");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Consulta");
@@ -229,12 +238,12 @@ public class Frm_Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Membro tela3 = new Frm_Membro();
         tela3.novo = true;
-        CentralizarFormulario.centralizaJanelaInterna(tela3, jDesktopPane);
+        CentralizarFormulario.centralizaJanelaInterna(tela3, jDesktopPane); //NA FUNÇÃO JA DEIXA VISIBLE 
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Frm_MembroConsulta f = new Frm_MembroConsulta(null, true);
+        Frm_MembroConsulta f = new Frm_MembroConsulta(this, true);
         f.setAlterar(false);
         f.setVisible(true);
 
@@ -243,9 +252,16 @@ public class Frm_Principal extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         Frm_CadastroCongregacao tela3 = new Frm_CadastroCongregacao();
-       
+
         CentralizarFormulario.centralizaJanelaInterna(tela3, jDesktopPane);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        Frm_Membro tela3 = new Frm_Membro();
+        tela3.novo = true;
+        CentralizarFormulario.centralizaJanelaInterna(tela3, jDesktopPane);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -298,6 +314,7 @@ public class Frm_Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JLabel lblUsuarioLogado;

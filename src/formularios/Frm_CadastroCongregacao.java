@@ -35,7 +35,6 @@ public class Frm_CadastroCongregacao extends javax.swing.JInternalFrame {
         carregaCompoPastor();
         carregaTabela();
         botaoInicio();
-
     }
 
     /**
@@ -393,7 +392,6 @@ public class Frm_CadastroCongregacao extends javax.swing.JInternalFrame {
                 break;
         }
 
-
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -403,7 +401,7 @@ public class Frm_CadastroCongregacao extends javax.swing.JInternalFrame {
             return;
         }
         if (cboPastor.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(null, "Pastor não informado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Pastor não informado.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (txtBairro.getText().isEmpty()) {
@@ -424,27 +422,24 @@ public class Frm_CadastroCongregacao extends javax.swing.JInternalFrame {
         // SE FOR NOVO ---------------------------------------------------------
         if (novo) {
             if (congregacaoDao.inserirNovo(congregacao)) {
-                carregaTabela();
-                limparTudo();
-                botaoInicio();
                 JOptionPane.showMessageDialog(null, "Cadastrado com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao cadastrar no banco.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
-        // ALTERAÇÃO -----------------------------------------------------------   
+            // ALTERAÇÃO -----------------------------------------------------------   
         } else {
             congregacao.setIdCongregacao(Integer.parseInt(txtCodigo.getText()));
             if (congregacaoDao.alterar(congregacao)) {
-                carregaTabela();
-                limparTudo();
-                botaoInicio();
                 JOptionPane.showMessageDialog(null, "Alterado com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao altera no banco.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
 
+            carregaTabela();
+            limparTudo();
+            botaoInicio();
+            habilitaCampos(false);
         }
-
 
     }//GEN-LAST:event_btnSalvarActionPerformed
 

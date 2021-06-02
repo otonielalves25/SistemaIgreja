@@ -7,24 +7,30 @@ package formularios;
 
 import dao.MembroDao;
 import dao.UsuarioDao;
+import static formularios.Frm_Principal.jDesktopPane;
 import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Membro;
-
+import modelo.Session;
+import util.CentralizarFormulario;
 
 /**
  *
  * @author Tony
  */
 public class Frm_MembroConsulta extends javax.swing.JDialog {
-    
-    DateFormat strDf = new SimpleDateFormat("yyyy-MM-dd");
+
+    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     DefaultTableModel tabelaModelo;
-    UsuarioDao usuarioDao; 
+    UsuarioDao usuarioDao;
     MembroDao membroDao;
+    public boolean novo;
 
     /**
      * Creates new form Frm_UsuarioConsulta
@@ -34,13 +40,13 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         initComponents();
         usuarioDao = new UsuarioDao();
         membroDao = new MembroDao();
-        tabelaModelo = (DefaultTableModel) grelhaPesquisaUsuario.getModel();
+        tabelaModelo = (DefaultTableModel) grelhaPesquisa.getModel();
         carregaTabela();
 
     }
 
     private void verificacarAlteracao() {
-        if (!isAlterar()) {
+        if (novo) {
             btnAlterar.setVisible(false);
         } else {
             btnAlterar.setVisible(true);
@@ -63,7 +69,7 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         txtPesquisa = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        grelhaPesquisaUsuario = new javax.swing.JTable();
+        grelhaPesquisa = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
@@ -95,35 +101,41 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel2.setText("Pesquisa por Nome:");
 
-        grelhaPesquisaUsuario.setModel(new javax.swing.table.DefaultTableModel(
+        grelhaPesquisa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nome:", "Cargo Igreja", "Data Congregação", "Dizimista", "Status"
+                "ID", "Nome:", "Endereço:", "Cargo Igreja", "Data Congregação", "Dizimista", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        grelhaPesquisaUsuario.setRowHeight(18);
-        jScrollPane1.setViewportView(grelhaPesquisaUsuario);
-        if (grelhaPesquisaUsuario.getColumnModel().getColumnCount() > 0) {
-            grelhaPesquisaUsuario.getColumnModel().getColumn(0).setMaxWidth(50);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(1).setMinWidth(300);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(1).setPreferredWidth(300);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(1).setMaxWidth(300);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(2).setMinWidth(150);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(2).setPreferredWidth(150);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(2).setMaxWidth(150);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(3).setMinWidth(150);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(3).setPreferredWidth(100);
-            grelhaPesquisaUsuario.getColumnModel().getColumn(3).setMaxWidth(150);
+        grelhaPesquisa.setRowHeight(18);
+        jScrollPane1.setViewportView(grelhaPesquisa);
+        if (grelhaPesquisa.getColumnModel().getColumnCount() > 0) {
+            grelhaPesquisa.getColumnModel().getColumn(0).setMinWidth(30);
+            grelhaPesquisa.getColumnModel().getColumn(0).setPreferredWidth(30);
+            grelhaPesquisa.getColumnModel().getColumn(0).setMaxWidth(30);
+            grelhaPesquisa.getColumnModel().getColumn(1).setMinWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(1).setPreferredWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(1).setMaxWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(2).setMinWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(2).setPreferredWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(2).setMaxWidth(260);
+            grelhaPesquisa.getColumnModel().getColumn(3).setMinWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(3).setPreferredWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(3).setMaxWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(4).setMinWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(4).setPreferredWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(4).setMaxWidth(120);
+            grelhaPesquisa.getColumnModel().getColumn(6).setMinWidth(100);
         }
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/block.png"))); // NOI18N
@@ -161,30 +173,32 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblQuantidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPesquisa)))
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton2))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtPesquisa)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblQuantidade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 938, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(147, 147, 147))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 999, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +226,9 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 975, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,23 +247,25 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
 
-        if (grelhaPesquisaUsuario.getSelectedRowCount() > 0) {
-            int linha = grelhaPesquisaUsuario.getSelectedRow();
+        if (grelhaPesquisa.getSelectedRowCount() > 0) {
+            int linha = grelhaPesquisa.getSelectedRow();
 
-            String usuario = (String) grelhaPesquisaUsuario.getValueAt(0, 1);
+            String previlegio = Session.getPrevilegio();
 
             // verifica se pede ser instalado
-            if (usuario.equals("admin")) {
-                JOptionPane.showMessageDialog(this, "Usuário não pode ser excluído.", "erro", JOptionPane.ERROR_MESSAGE);
+            if (!previlegio.equals("Administrador")) {
+                JOptionPane.showMessageDialog(this, "Usuário sem autorização para excluir membros.", "erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // fim verifica se pede ser instalado
             int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir o usuário", "confirm", JOptionPane.INFORMATION_MESSAGE);
             if (resposta == 0) {
 
-                int codigo = (int) grelhaPesquisaUsuario.getValueAt(linha, 0);
-                if (usuarioDao.excluir(codigo)) {
+                int codigo = (int) grelhaPesquisa.getValueAt(linha, 0);
+                if (membroDao.delete(codigo)) {
+
                     carregaTabela();
+
                     JOptionPane.showMessageDialog(this, "Usuário Excluido com sucesso.", "Sucesso", JOptionPane.WARNING_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Erro ao Excluir usuário.", "erro", JOptionPane.ERROR_MESSAGE);
@@ -264,19 +282,21 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
 
-        if (grelhaPesquisaUsuario.getSelectedRowCount() > 0) {
-            int linha = grelhaPesquisaUsuario.getSelectedRow();
+        if (grelhaPesquisa.getSelectedRowCount() > 0) {
+            int linha = grelhaPesquisa.getSelectedRow();
 
             // verifica se pede ser instalado
-            String usuario = (String) grelhaPesquisaUsuario.getValueAt(0, 1);
+            String usuario = (String) grelhaPesquisa.getValueAt(0, 1);
             if (usuario.equals("Admin")) {
                 JOptionPane.showMessageDialog(this, "Usuário não pode ser excluído.", "erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // fim verifica se pede ser instalado
 
-            int codigo = (int) grelhaPesquisaUsuario.getValueAt(linha, 0);
-            setCodigoUsuario(codigo);
+            int codigo = (int) grelhaPesquisa.getValueAt(linha, 0);
+            Frm_Membro fh = new Frm_Membro();
+            fh.setIdMembro(codigo);
+            CentralizarFormulario.centralizaJanelaInterna(fh, jDesktopPane);
             this.dispose();
 
         } else {
@@ -285,8 +305,10 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
+
         // TODO add your handling code here:
         carregaTabela();
+
     }//GEN-LAST:event_txtPesquisaKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -343,15 +365,18 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
         ArrayList<Membro> lista = membroDao.getListagem(txtPesquisa.getText());
         tabelaModelo.setNumRows(0);
         for (Membro membro : lista) {
-            //String dataNascimento = strDf.format(membro.getDataNascimento());
-            String nome = membro.getCongregacao().getNomeCongregacao();
+            String dizimista = "S".equals(membro.getDizimista()) ? "SIM" : "NÃO";
             tabelaModelo.addRow(new Object[]{
                 membro.getIdMembro(),
-                //dataNascimento,
-                nome,
-               
+                membro.getNome(),
+                membro.getEndereco(),
+                membro.getCargo(),
+                membro.getDataInicioFormatada(),
+                dizimista,
+                membro.getStatus()
+
             });
-            
+
         }
         lblQuantidade.setText(lista.size() + " Localidados.");
     }
@@ -359,7 +384,7 @@ public class Frm_MembroConsulta extends javax.swing.JDialog {
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JTable grelhaPesquisaUsuario;
+    private javax.swing.JTable grelhaPesquisa;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;

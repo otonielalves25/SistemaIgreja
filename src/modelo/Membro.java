@@ -5,15 +5,18 @@
  */
 package modelo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author Tony
  */
 public class Membro {
-
-    private int idMembro;
+    
+        private int idMembro;
     private String nome;
-    private String dataNascimento;
+    private Date dataNascimento;
     private String escolaridade;
     private String profissao;
     private String endereco;
@@ -34,67 +37,16 @@ public class Membro {
     private String cargo;
     private byte[] foto;
     private String observacao;
-    private String dataCadastro;
+    private Date dataCadastro;
     private String status;
     private String igrejaBatismo;
-    private String dataBatismo;
+    private Date dataBatismo;
     private String pastorBatismo;
     private String sexo;
     private String email;
     private String dizimista;
     private Congregacao congregacao;
-    private String dataInicio;
-
-    public Membro() {
-    }
-
-    public Membro(int idMembro) {
-        this.idMembro = idMembro;
-
-    }
-        public Membro(int idMembro, String nome) {
-        this.idMembro = idMembro;
-        this.nome = nome;
-
-    }
-
-
-    public Membro(int idMembro, String nome, String dataNascimento, String escolaridade, String profissao, String endereco, String numero,
-            String bairro, String cidade, String estado, String cep, String telefone, String naturalidade, String rg, String cpf,
-            String celular, String pai, String mae, String estadoCivil, String conjuge, String cargo, byte[] foto, String observacao,
-            String dataCadastro, String status, String igrejaBatismo, String dataBatismo, String pastorBatismo) {
-        this.idMembro = idMembro;
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.escolaridade = escolaridade;
-        this.profissao = profissao;
-        this.endereco = endereco;
-        this.numero = numero;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.estado = estado;
-        this.cep = cep;
-        this.telefone = telefone;
-        this.naturalidade = naturalidade;
-        this.rg = rg;
-        this.cpf = cpf;
-        this.celular = celular;
-        this.pai = pai;
-        this.mae = mae;
-        this.estadoCivil = estadoCivil;
-        this.conjuge = conjuge;
-        this.cargo = cargo;
-        this.foto = foto;
-        this.observacao = observacao;
-        this.dataCadastro = dataCadastro;
-        this.status = status;
-        this.igrejaBatismo = igrejaBatismo;
-        this.dataBatismo = dataBatismo;
-        this.pastorBatismo = pastorBatismo;
-
-    }
-    
-    
+    private Date dataInicio;
 
     /**
      * @return the idMembro
@@ -105,14 +57,10 @@ public class Membro {
 
     /**
      * @param idMembro the idMembro to set
-     *
      */
     public void setIdMembro(int idMembro) {
         this.idMembro = idMembro;
-
     }
-
-
 
     /**
      * @return the nome
@@ -126,6 +74,20 @@ public class Membro {
      */
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    /**
+     * @return the dataNascimento
+     */
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    /**
+     * @param dataNascimento the dataNascimento to set
+     */
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     /**
@@ -381,6 +343,20 @@ public class Membro {
     }
 
     /**
+     * @return the foto
+     */
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    /**
+     * @param foto the foto to set
+     */
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    /**
      * @return the observacao
      */
     public String getObservacao() {
@@ -395,16 +371,16 @@ public class Membro {
     }
 
     /**
-     * @return the dataCadatro
+     * @return the dataCadastro
      */
-    public String getDataCadastro() {
+    public Date getDataCadastro() {
         return dataCadastro;
     }
 
     /**
      * @param dataCadastro the dataCadastro to set
      */
-    public void setDataCadastro(String dataCadastro) {
+    public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
@@ -439,14 +415,14 @@ public class Membro {
     /**
      * @return the dataBatismo
      */
-    public String getDataBatismo() {
+    public Date getDataBatismo() {
         return dataBatismo;
     }
 
     /**
      * @param dataBatismo the dataBatismo to set
      */
-    public void setDataBatismo(String dataBatismo) {
+    public void setDataBatismo(Date dataBatismo) {
         this.dataBatismo = dataBatismo;
     }
 
@@ -464,25 +440,6 @@ public class Membro {
         this.pastorBatismo = pastorBatismo;
     }
 
-    @Override
-    public String toString() {
-        return nome;
-    }
-
-    /**
-     * @return the dataNascimento
-     */
-    public String getDataNascimento() {
-        return dataNascimento;
-    }
-
-    /**
-     * @param dataNascimento the dataNascimento to set
-     */
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
     /**
      * @return the sexo
      */
@@ -495,20 +452,6 @@ public class Membro {
      */
     public void setSexo(String sexo) {
         this.sexo = sexo;
-    }
-
-    /**
-     * @return the foto
-     */
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    /**
-     * @param foto the foto to set
-     */
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     /**
@@ -542,23 +485,6 @@ public class Membro {
     /**
      * @return the congregacao
      */
-    /**
-     * @return the dataInicio
-     */
-    public String getDataInicio() {
-        return dataInicio;
-    }
-
-    /**
-     * @param dataInicio the dataInicio to set
-     */
-    public void setDataInicio(String dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    /**
-     * @return the congregacao
-     */
     public Congregacao getCongregacao() {
         return congregacao;
     }
@@ -570,4 +496,77 @@ public class Membro {
         this.congregacao = congregacao;
     }
 
+    /**
+     * @return the dataInicio
+     */
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+    
+        public String getDataInicioFormatada() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicio);
+    }
+
+    /**
+     * @param dataInicio the dataInicio to set
+     */
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+
+
+    public Membro() {
+    }
+
+    public Membro(int idMembro) {
+        this.idMembro = idMembro;
+
+    }
+
+    public Membro(int idMembro, String nome) {
+        this.idMembro = idMembro;
+        this.nome = nome;
+
+    }
+
+    public Membro(int idMembro, String nome, Date dataNascimento, String escolaridade, String profissao, String endereco, String numero, String bairro, String cidade, String estado, String cep, String telefone, String naturalidade, String rg, String cpf, String celular, String pai, String mae, String estadoCivil, String conjuge, String cargo, byte[] foto, String observacao, Date dataCadastro, String status, String igrejaBatismo, Date dataBatismo, String pastorBatismo, String sexo, String email, String dizimista, Congregacao congregacao, Date dataInicio) {
+        this.idMembro = idMembro;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.escolaridade = escolaridade;
+        this.profissao = profissao;
+        this.endereco = endereco;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.telefone = telefone;
+        this.naturalidade = naturalidade;
+        this.rg = rg;
+        this.cpf = cpf;
+        this.celular = celular;
+        this.pai = pai;
+        this.mae = mae;
+        this.estadoCivil = estadoCivil;
+        this.conjuge = conjuge;
+        this.cargo = cargo;
+        this.foto = foto;
+        this.observacao = observacao;
+        this.dataCadastro = dataCadastro;
+        this.status = status;
+        this.igrejaBatismo = igrejaBatismo;
+        this.dataBatismo = dataBatismo;
+        this.pastorBatismo = pastorBatismo;
+        this.sexo = sexo;
+        this.email = email;
+        this.dizimista = dizimista;
+        this.congregacao = congregacao;
+        this.dataInicio = dataInicio;
+    }
+
+   
+
+    
 }

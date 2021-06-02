@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -39,7 +40,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     //--------------------------------------
     MembroDao membroDao = new MembroDao();
     CongregacaoDao congrecaoDao;
-    DateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     Membro membro;
     public boolean novo;
     // VARIAVEL DO PROJETO //
@@ -68,7 +69,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
-        btnPesquisa = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
@@ -132,8 +132,8 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         txtRg = new javax.swing.JTextField();
         txtCpf = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
-        spsSexo = new javax.swing.JSpinner();
         jLabel31 = new javax.swing.JLabel();
+        cboSexo = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservacao = new javax.swing.JTextPane();
         jLabel29 = new javax.swing.JLabel();
@@ -142,10 +142,28 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setTitle("Cadatro de Usuario");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
+        txtCodigo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtCodigo.setEnabled(false);
         txtCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,14 +188,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
             }
         });
 
-        btnPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/zoom.png"))); // NOI18N
-        btnPesquisa.setText("PESQUISAR");
-        btnPesquisa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesquisaActionPerformed(evt);
-            }
-        });
-
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Dado do Membro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 0, 153))); // NOI18N
 
@@ -196,7 +206,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         jLabel14.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel14.setText("Cargo na Igreja:");
 
-        cboCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Auxiliar", "Evangelista", "Presbítero(a)", "Missionário(a)", "Pastor(a) Presidente", "Pastor(a)", "Secretário(a)", "Tesoureiro(a)", "Vice Presidente" }));
+        cboCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Nenhum", "Auxiliar", "Evangelista", "Presbítero(a)", "Missionário(a)", "Pastor(a) Presidente", "Pastor(a)", "Secretário(a)", "Tesoureiro(a)", "Vice Presidente" }));
 
         cboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ATIVO", "INATIVO" }));
 
@@ -211,6 +221,8 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
         jLabel11.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel11.setText("Idade:");
+
+        txtDataCongrega.setDateFormatString("yyyy/MM/mm");
 
         jLabel34.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel34.setText("Congrega Desde:");
@@ -241,7 +253,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel34)
-                                .addGap(0, 26, Short.MAX_VALUE))
+                                .addGap(0, 49, Short.MAX_VALUE))
                             .addComponent(txtDataCongrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -398,7 +410,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                        .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(281, 281, 281)
@@ -413,7 +425,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(cboEscolaridade, 0, 0, Short.MAX_VALUE))))
+                            .addComponent(cboEscolaridade, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -611,10 +623,10 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel6.setText("CPF:");
 
-        spsSexo.setModel(new javax.swing.SpinnerListModel(new String[] {"M", "F"}));
-
         jLabel31.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel31.setText("Sexo:");
+
+        cboSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "M", "F" }));
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -625,7 +637,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 118, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel26))
                     .addComponent(txtProfissao, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
@@ -634,10 +646,9 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                             .addComponent(jLabel24))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel31)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(spsSexo))))
+                            .addComponent(jLabel31)
+                            .addComponent(cboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -663,7 +674,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtNaturalidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(spsSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtDataCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -702,37 +713,36 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel29)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(87, 87, 87)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(8, 8, 8)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(janelaFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel29)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(janelaFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(143, 143, 143))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -743,15 +753,17 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                         .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(19, 19, 19)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(janelaFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(janelaFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -768,7 +780,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -777,10 +788,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 939, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -791,13 +799,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
-        // TODO add your handling code here:
-        Frm_MembroConsulta f = new Frm_MembroConsulta(null, true);
-        f.setVisible(true);
-
-    }//GEN-LAST:event_btnPesquisaActionPerformed
 
     // FUNÇÃO CONVERTE FOTO EM BITES //////////////////////////////////////////
     private byte[] converteFotoParaBanco(JLabel nomeLabelFoto) {
@@ -850,16 +851,31 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Data de inicio na igreja não informada", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        // VERIFICA DATA DE INCIO NA IGREJA
+        if (txtDataBatismo.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Data de Batismo não informada", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // VERIFICA DATA DE INCIO NA IGREJA
+        if (txtDataCadastro.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Data de Batismo não informada", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+               // VERIFICA DATA DE INCIO NA IGREJA
+        if (cboCargo.getSelectedIndex()<0){
+            JOptionPane.showMessageDialog(this, "Informo o cargo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // seta valores no usuario /////////////////////////////////////////////
         membro = new Membro();
         Congregacao congregacao = (Congregacao) cboCongregacao.getSelectedItem();
 
         membro.setNome(txtNome.getText());
-        membro.setDataNascimento(simpleDate.format(txtDataNascimento.getDate()));
+        membro.setDataNascimento(txtDataNascimento.getDate());
         membro.setCargo(cboCargo.getSelectedItem().toString());
         membro.setFoto(converteFotoParaBanco(janelaFoto));
-        membro.setSexo(spsSexo.getValue().toString());
+        membro.setSexo(cboSexo.getSelectedItem().toString());
         membro.setCongregacao(congregacao);
         membro.setStatus(cboStatus.getSelectedItem().toString());
         String dizimista = ckDizimista.isSelected() ? "S" : "N";
@@ -872,7 +888,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         membro.setTelefone(txtTelefone.getText());
         membro.setEmail(txtEmail.getText());
         membro.setEscolaridade(cboEscolaridade.getSelectedItem().toString());
-        membro.setDataCadastro(simpleDate.format(txtDataCadastro.getDate()));
+        membro.setDataCadastro(txtDataCadastro.getDate());
         membro.setNaturalidade(txtNaturalidade.getText());
         membro.setProfissao(txtProfissao.getText());
         membro.setRg(txtRg.getText());
@@ -881,15 +897,21 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         membro.setMae(txtNomeMae.getText());
         membro.setEstadoCivil(cboEstadoCivil.getSelectedItem().toString());
         membro.setConjuge(txtConjuge.getText());
-        try {
-            membro.setDataBatismo(simpleDate.format(txtDataBatismo.getDate()));
-        } catch (Exception e) {
+
+        if (txtDataBatismo.getDate() == null) {
+            membro.setDataBatismo(null);
+        } else {
+            membro.setDataBatismo(txtDataBatismo.getDate());
         }
 
         membro.setIgrejaBatismo(txtNomeIgreja.getText());
         membro.setPastorBatismo(txtPastorBatismo.getText());
         membro.setObservacao(txtObservacao.getText());
-        membro.setDataInicio(simpleDate.format(txtDataCongrega.getDate()));
+        if (txtDataCongrega.getDate() == null) {
+            membro.setDataInicio(null);
+        } else {
+            membro.setDataInicio(txtDataCongrega.getDate());
+        }
 
         if (novo) {
             //inserindo novo no banco
@@ -922,7 +944,7 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     private void janelaFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_janelaFotoMouseClicked
         // TODO add your handling code here:
         //PEGA DUPLO CLIQUE 
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
             String caminhaImagem;
             try {
                 JFileChooser file = new JFileChooser();
@@ -959,13 +981,64 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
     private void cboCongregacaoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cboCongregacaoFocusGained
         // TODO add your handling code here:
-        String dataNascimento = simpleDate.format(txtDataNascimento.getDate());
-        if (!dataNascimento.isEmpty()) {
-            txtIdade.setText(Datas.calcIdade(dataNascimento) + "");
+        if (txtDataNascimento.getDate() != null) {
+            String dataNascimento = sdf.format(txtDataNascimento.getDate());
+            if (!dataNascimento.isEmpty()) {
+                txtIdade.setText(Datas.calcIdade(dataNascimento) + "");
+            }
         }
 
-
     }//GEN-LAST:event_cboCongregacaoFocusGained
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+        if (!novo) {
+            Membro m = membroDao.getMembro(this.idMembro);
+            txtCodigo.setText(m.getIdMembro() + "");
+            txtNome.setText(m.getNome());
+            txtDataNascimento.setDate(m.getDataNascimento());
+            txtProfissao.setText(m.getProfissao());
+            cboEscolaridade.setSelectedItem(m.getEscolaridade());
+            txtRg.setText(m.getRg());
+            txtCpf.setText(m.getCpf());
+            txtTelefone.setText(m.getTelefone());
+            cboCargo.setSelectedItem(m.getCargo());
+            txtRua.setText(m.getEndereco());
+            txtNumero.setText(m.getNumero());
+            txtCidade.setText(m.getCidade());
+            cboEstado.setSelectedItem(m.getEstado());
+            txtCep.setText(m.getCep());
+            txtNomePai.setText(m.getPai());
+            txtNomeMae.setText(m.getMae());
+            cboEstadoCivil.setSelectedItem(m.getEstadoCivil());
+            txtConjuge.setText(m.getConjuge());
+            txtNaturalidade.setText(m.getNaturalidade());
+            cboStatus.setSelectedItem(m.getStatus());
+            cboSexo.setSelectedItem(m.getSexo());
+            txtDataBatismo.setDate(m.getDataBatismo());
+            txtNomeIgreja.setText(m.getIgrejaBatismo());
+            txtPastorBatismo.setText(m.getPastorBatismo());
+            txtObservacao.setText(m.getObservacao());
+            ManipulaImagem.exibirImagemNoLabel(m.getFoto(), janelaFoto);
+            janelaFoto.setText("");
+            cboCongregacao.setSelectedItem(m.getCongregacao().getNomeCongregacao());
+            txtEmail.setText(m.getEmail());
+            //ckDizimista.setSelected(false);
+            String dataNasc = sdf.format(m.getDataNascimento());
+            int idade = Datas.calcIdade(dataNasc);
+            txtIdade.setText(idade + "");
+
+            txtDataCongrega.setDate(m.getDataInicio());
+            String diz = m.getDizimista();           
+          
+            if (diz.equalsIgnoreCase("S")) {
+                ckDizimista.setSelected(true);
+            } else {
+                ckDizimista.setSelected(false);
+            }
+
+        }
+    }//GEN-LAST:event_formInternalFrameOpened
 
     //FUNÇÃO LIMPAR CAMPOS
     private void limpar() {
@@ -989,15 +1062,16 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
         cboEstadoCivil.setSelectedItem("Selecione...");
         txtConjuge.setText("");
         txtNaturalidade.setText("");
-        cboStatus.setSelectedItem("Selecione...");
+        cboStatus.setSelectedItem(0);
         txtDataBatismo.setDate(null);
         txtNomeIgreja.setText("");
         txtPastorBatismo.setText("");
         txtObservacao.setText("");
         janelaFoto.setText("");
-        cboCongregacao.setSelectedItem(null);
+        cboCongregacao.setSelectedItem("Selecione...");
         txtEmail.setText("");
         ckDizimista.setSelected(false);
+        cboSexo.setSelectedItem("Selecione...");
         janelaFoto.setIcon(new ImageIcon());
         janelaFoto.setText("FOTO");
         txtIdade.setText("");
@@ -1018,13 +1092,13 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPesquisa;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cboCargo;
     private javax.swing.JComboBox<Object> cboCongregacao;
     private javax.swing.JComboBox<String> cboEscolaridade;
     private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JComboBox<String> cboEstadoCivil;
+    private javax.swing.JComboBox<String> cboSexo;
     private javax.swing.JComboBox<String> cboStatus;
     private javax.swing.JCheckBox ckDizimista;
     private javax.swing.JButton jButton1;
@@ -1069,7 +1143,6 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel janelaFoto;
-    private javax.swing.JSpinner spsSexo;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtCodigo;
@@ -1095,4 +1168,19 @@ public class Frm_Membro extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
 
+    private int idMembro;
+
+    /**
+     * @return the idMembro
+     */
+    public int getIdMembro() {
+        return idMembro;
+    }
+
+    /**
+     * @param idMembro the idMembro to set
+     */
+    public void setIdMembro(int idMembro) {
+        this.idMembro = idMembro;
+    }
 }

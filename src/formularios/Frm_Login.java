@@ -16,7 +16,7 @@ import java.util.Calendar;
 
 
 import javax.swing.JOptionPane;
-import modelo.SessaoUsuario;
+import modelo.Session;
 import modelo.Usuario;
 import util.ConvertendoSenhaMD5;
 
@@ -203,9 +203,9 @@ public class Frm_Login extends javax.swing.JFrame {
         } else {
 
             //seta valar no usuario para sessão
-            SessaoUsuario.setIdUsuario(usuarioRetorno.getIdUsuario());
-            SessaoUsuario.setNomeUsuario(usuarioRetorno.getNome());
-            SessaoUsuario.setPrevilegio(usuarioRetorno.getPrevilegio());
+            Session.setIdUsuario(usuarioRetorno.getIdUsuario());
+            Session.setNomeUsuario(usuarioRetorno.getNome());
+            Session.setPrevilegio(usuarioRetorno.getPrevilegio());
             //abre aela principal se o usuario for encontrado
             new Frm_Principal().setVisible(true);
             // fecha da janela de login
