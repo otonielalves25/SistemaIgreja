@@ -5,40 +5,35 @@
  */
 package formularios;
 
+import dao.MembroDao;
 import dao.UsuarioDao;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
-import modelo.Session;
-import modelo.Usuario;
-
+import modelo.Membro;
 
 /**
  *
  * @author Tony
  */
-public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
+public class FrmAniversarioConsulta extends javax.swing.JDialog {
 
     DefaultTableModel tabelaModelo;
     UsuarioDao usuarioDao = new UsuarioDao();
+    MembroDao membroDao = new MembroDao();
+    SimpleDateFormat sdfDiaMes = new SimpleDateFormat("dd/MM");
 
     /**
      * Creates new form Frm_UsuarioConsulta
      */
-    public Frm_ConsultaAniversarios(java.awt.Frame parent, boolean modal) {
+    public FrmAniversarioConsulta(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        tabelaModelo = (DefaultTableModel) grelhaPesquisaUsuario.getModel();
+        tabelaModelo = (DefaultTableModel) tabelaAniversarios.getModel();
         carregaTabela();
+        mostraMesCombo();
 
-    }
-
-    private void verificacarAlteracao() {
-        if (!isAlterar()) {
-            btnAlterar.setVisible(false);
-        } else {
-            btnAlterar.setVisible(true);
-        }
     }
 
     /**
@@ -58,11 +53,11 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         txtPesquisa = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        btnCancelar = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         lblQuantidade = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabelaAniversarios = new javax.swing.JTable();
+        cboMes = new javax.swing.JComboBox<>();
 
         jButton1.setText("jButton1");
 
@@ -107,9 +102,9 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(102, 0, 0));
-        jLabel8.setText("Pesquisa Membro da Igreja");
+        jLabel8.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel8.setText("Consulta Aniversariantes");
 
         txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -120,81 +115,91 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel2.setText("Pesquisa por Nome:");
 
-        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/block.png"))); // NOI18N
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/ruler_pencil.png"))); // NOI18N
-        btnAlterar.setText("Alterar");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/cross.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
-            }
-        });
-
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/clear.png"))); // NOI18N
         jButton2.setText("Limpar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         lblQuantidade.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
-        lblQuantidade.setForeground(new java.awt.Color(51, 0, 153));
+        lblQuantidade.setForeground(new java.awt.Color(102, 0, 0));
         lblQuantidade.setText("0 registros localizados.");
+
+        tabelaAniversarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nome", "Data Aniversário", "Congregação", "Cargo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaAniversarios.setRowHeight(20);
+        jScrollPane2.setViewportView(tabelaAniversarios);
+        if (tabelaAniversarios.getColumnModel().getColumnCount() > 0) {
+            tabelaAniversarios.getColumnModel().getColumn(0).setMinWidth(60);
+            tabelaAniversarios.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tabelaAniversarios.getColumnModel().getColumn(0).setMaxWidth(60);
+            tabelaAniversarios.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabelaAniversarios.getColumnModel().getColumn(2).setMaxWidth(100);
+            tabelaAniversarios.getColumnModel().getColumn(3).setPreferredWidth(250);
+            tabelaAniversarios.getColumnModel().getColumn(3).setMaxWidth(250);
+            tabelaAniversarios.getColumnModel().getColumn(4).setPreferredWidth(120);
+            tabelaAniversarios.getColumnModel().getColumn(4).setMaxWidth(120);
+        }
+
+        cboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO" }));
+        cboMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboMesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblQuantidade)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblQuantidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)))
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton2)))
-                .addGap(147, 147, 147))
+                        .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 894, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
-                .addGap(408, 408, 408)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                        .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lblQuantidade))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblQuantidade)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,66 +217,6 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
-
-        if (grelhaPesquisaUsuario.getSelectedRowCount() > 0) {
-            int linha = grelhaPesquisaUsuario.getSelectedRow();
-
-            String usuario = (String) grelhaPesquisaUsuario.getValueAt(0, 1);
-
-            // verifica se pede ser instalado
-            if (usuario.equals("admin")) {
-                JOptionPane.showMessageDialog(this, "Usuário não pode ser excluído.", "erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // fim verifica se pede ser instalado
-            int resposta = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir o usuário", "confirm", JOptionPane.INFORMATION_MESSAGE);
-            if (resposta == 0) {
-
-                int codigo = (int) grelhaPesquisaUsuario.getValueAt(linha, 0);
-                if (usuarioDao.excluir(codigo)) {
-                    carregaTabela();
-                    JOptionPane.showMessageDialog(this, "Usuário Excluido com sucesso.", "Sucesso", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Erro ao Excluir usuário.", "erro", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuário não foi excluido", "erro", JOptionPane.INFORMATION_MESSAGE);
-
-    }//GEN-LAST:event_btnExcluirActionPerformed
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione um usuário. ", "erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
-
-        if (grelhaPesquisaUsuario.getSelectedRowCount() > 0) {
-            int linha = grelhaPesquisaUsuario.getSelectedRow();
-
-            // verifica se pede ser instalado
-            String usuario = (String) grelhaPesquisaUsuario.getValueAt(0, 1);
-            if (usuario.equals("Admin")) {
-                JOptionPane.showMessageDialog(this, "Usuário não pode ser excluído.", "erro", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // fim verifica se pede ser instalado
-
-            int codigo = (int) grelhaPesquisaUsuario.getValueAt(linha, 0);
-            setCodigoUsuario(codigo);
-            this.dispose();
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione um usuário. ", "erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void txtPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyReleased
         // TODO add your handling code here:
@@ -280,9 +225,27 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        verificacarAlteracao();
-        //testes
+
     }//GEN-LAST:event_formWindowOpened
+
+    private void cboMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboMesActionPerformed
+        // TODO add your handling code here:
+
+        carregaTabela();
+    }//GEN-LAST:event_cboMesActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        txtPesquisa.setText("");
+        mostraMesCombo();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    // CARREGA COMBOX
+    private void mostraMesCombo() {
+        int mes2 = new Date().getMonth();
+        cboMes.setSelectedIndex(mes2);
+    }
 
     /**
      * @param args the command line arguments
@@ -298,17 +261,29 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frm_ConsultaAniversarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAniversarioConsulta.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frm_ConsultaAniversarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAniversarioConsulta.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frm_ConsultaAniversarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAniversarioConsulta.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frm_ConsultaAniversarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmAniversarioConsulta.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -317,7 +292,7 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Frm_ConsultaAniversarios dialog = new Frm_ConsultaAniversarios(new javax.swing.JFrame(), true);
+                FrmAniversarioConsulta dialog = new FrmAniversarioConsulta(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -327,26 +302,38 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
                 dialog.setVisible(true);
             }
         });
+
     }
 
     //FUNÇÃO QUE CARREAGO OS AS TABELAS
     private void carregaTabela() {
 
-        ArrayList<Usuario> lista = usuarioDao.getListaUsuarios(txtPesquisa.getText());
+        String indexMes = String.valueOf(cboMes.getSelectedIndex() + 1);
+        if (indexMes.length() < 2) {
+            indexMes = "0" + indexMes;
+        }
+
+        ArrayList<Membro> lista = membroDao.getListagemAniversarantes(txtPesquisa.getText(), indexMes);
         tabelaModelo.setNumRows(0);
-        for (Usuario usuario : lista) {
+        for (Membro m : lista) {
+
             tabelaModelo.addRow(new Object[]{
-                usuario.getIdUsuario(),
-                usuario.getNome(),
-                usuario.getLogin(),
-                usuario.getPrevilegio(),});
+                m.getIdMembro(),
+                m.getNome(),
+                m.getDataNascimentoFormatada(),
+                m.getCongregacao().getNomeCongregacao(),
+                m.getCargo(),});
 
         }
+        if (tabelaModelo.getRowCount() > 1) {
+            lblQuantidade.setText(tabelaModelo.getRowCount() + " Membros fazem aniversário esse mês.");
+        } else {
+            lblQuantidade.setText(tabelaModelo.getRowCount() + " Membro faz aniversário esse mês.");
+        }
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlterar;
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnExcluir;
+    private javax.swing.JComboBox<String> cboMes;
     private javax.swing.JTable grelhaPesquisaUsuario;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -355,7 +342,9 @@ public class Frm_ConsultaAniversarios extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblQuantidade;
+    private javax.swing.JTable tabelaAniversarios;
     private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 

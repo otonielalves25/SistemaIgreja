@@ -5,7 +5,9 @@
  */
 package formularios;
 
+import dao.ImpressaoDao;
 import dao.UsuarioDao;
+import impressao.Impressao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -25,14 +27,14 @@ import util.ConvertendoSenhaMD5;
  *
  * @author Tony
  */
-public class Frm_Login extends javax.swing.JFrame {
+public class FrmLogin extends javax.swing.JFrame {
 
     UsuarioDao usuarioDao = new UsuarioDao();
 
     /**
      * Creates new form FrmLogin
      */
-    public Frm_Login() {
+    public FrmLogin() {
 
         initComponents();
         txtUsuario.requestFocus();        
@@ -207,7 +209,7 @@ public class Frm_Login extends javax.swing.JFrame {
             Session.setNomeUsuario(usuarioRetorno.getNome());
             Session.setPrevilegio(usuarioRetorno.getPrevilegio());
             //abre aela principal se o usuario for encontrado
-            new Frm_Principal().setVisible(true);
+            new FrmPrincipal().setVisible(true);
             // fecha da janela de login
             this.dispose();
         }
@@ -244,14 +246,22 @@ public class Frm_Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frm_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frm_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frm_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frm_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -264,7 +274,7 @@ public class Frm_Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Frm_Login().setVisible(true);
+                new FrmLogin().setVisible(true);
             }
         });
     }
