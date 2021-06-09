@@ -894,6 +894,8 @@ public class FrmMembroCadastro extends javax.swing.JInternalFrame {
             if (membroDao.insert(membro)) {
                 JOptionPane.showMessageDialog(this, "Cadastrado com Sucesso.", "Erro", JOptionPane.INFORMATION_MESSAGE);
                 limpar();
+                novo = true;
+                
             } else {
                 JOptionPane.showMessageDialog(this, " Erro ao cadastrar usuário.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -902,7 +904,8 @@ public class FrmMembroCadastro extends javax.swing.JInternalFrame {
             membro.setIdMembro(Integer.parseInt(txtCodigo.getText()));
             if (membroDao.update(membro)) {
                 JOptionPane.showMessageDialog(this, "Alterado com Sucesso.", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                limpar();
+                //limpar();
+                novo = false;
             } else {
                 JOptionPane.showMessageDialog(this, " Erro ao alterar usuário.", "Erro", JOptionPane.ERROR_MESSAGE);
             }

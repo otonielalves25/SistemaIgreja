@@ -57,6 +57,11 @@ public class Session {
         previlegio = aPrevilegio;
     }
     
+    public static void sairSession(){
+        nomeUsuario = "";
+        previlegio = "";
+        idUsuario = 0;
+    }
   
     
     

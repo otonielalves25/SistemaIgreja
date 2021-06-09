@@ -13,8 +13,8 @@ import java.util.Date;
  * @author Tony
  */
 public class Membro {
-    
-        private int idMembro;
+
+    private int idMembro;
     private String nome;
     private Date dataNascimento;
     private String escolaridade;
@@ -88,6 +88,10 @@ public class Membro {
      */
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    public String getDataNascimentoFormatada() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(this.dataNascimento);
     }
 
     /**
@@ -502,8 +506,8 @@ public class Membro {
     public Date getDataInicio() {
         return dataInicio;
     }
-    
-        public String getDataInicioFormatada() {
+
+    public String getDataInicioFormatada() {
         return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicio);
     }
 
@@ -513,8 +517,6 @@ public class Membro {
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
     }
-
-
 
     public Membro() {
     }
@@ -566,7 +568,4 @@ public class Membro {
         this.dataInicio = dataInicio;
     }
 
-   
-
-    
 }

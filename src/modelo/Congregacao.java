@@ -21,6 +21,7 @@ public class Congregacao {
     private String cep;
     private String telefone;
     private Membro pastor;
+    private byte[] logo;
 
 
     public Congregacao(int idCongregacao) {
@@ -147,6 +148,20 @@ public class Congregacao {
      */
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    /**
+     * @return the logo
+     */
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    /**
+     * @param logo the logo to set
+     */
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
     }
 
 

@@ -369,6 +369,8 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
             int codigo = (int) grelhaPesquisa.getValueAt(grelhaPesquisa.getSelectedRow(), 0);
             imp.setMembro_id(codigo);
             imp.imprimirCarterinha();
+        }else{
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para impressão.", "ERRO", JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed

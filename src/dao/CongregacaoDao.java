@@ -26,7 +26,7 @@ public class CongregacaoDao {
 
     //INSERIR NOVO /////////////////////////////////////////////////////////////
     public boolean inserirNovo(Congregacao congregacao) {
-        String sql = "INSERT INTO congregacao (nomeCongregacao,endereco,bairro,cidade,cep,telefone,idPastorResponsavel) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO congregacao (nomeCongregacao,endereco,bairro,cidade,cep,telefone,idPastorResponsavel,logo) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
@@ -39,6 +39,7 @@ public class CongregacaoDao {
             stm.setString(5, congregacao.getCep());
             stm.setString(6, congregacao.getTelefone());
             stm.setInt(7, congregacao.getPastor().getIdMembro());
+            stm.setBytes(8, congregacao.getLogo());
 
             stm.execute();
             con.close();
@@ -54,7 +55,7 @@ public class CongregacaoDao {
     //ALTERAR NOVO /////////////////////////////////////////////////////////////
     public boolean alterar(Congregacao congregacao) {
         String sql = "UPDATE congregacao SET nomeCongregacao=?,endereco=?,bairro=?,cidade=?,"
-                + "cep=?, telefone=?,idPastorResponsavel=? WHERE idCongregacao=?";
+                + "cep=?, telefone=?,idPastorResponsavel=?, logo=? WHERE idCongregacao=?";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
@@ -67,7 +68,8 @@ public class CongregacaoDao {
             stm.setString(5, congregacao.getCep());
             stm.setString(6, congregacao.getTelefone());
             stm.setInt(7, congregacao.getPastor().getIdMembro());
-            stm.setInt(8, congregacao.getIdCongregacao());
+            stm.setBytes(8, congregacao.getLogo());
+            stm.setInt(9, congregacao.getIdCongregacao());
 
             stm.execute();
 
@@ -122,6 +124,7 @@ public class CongregacaoDao {
                 congregacao.setBairro(rs.getString("bairro"));
                 congregacao.setCep(rs.getString("cep"));
                 Membro m = new Membro(rs.getInt("idMembro"), rs.getString("nome"));
+                congregacao.setLogo(rs.getBytes("logo"));
                 congregacao.setPastor(m);
 
             }
@@ -154,6 +157,7 @@ public class CongregacaoDao {
                 congregacao.setCidade(rs.getString("cidade"));
                 congregacao.setBairro(rs.getString("bairro"));
                 congregacao.setCep(rs.getString("cep"));
+                congregacao.setLogo(rs.getBytes("logo"));
                 //Membro m = new Membro(rs.getInt("idMembro"), rs.getString("nome"));
                 Membro x = new MembroDao().getMembro(rs.getInt("idPastorResponsavel"));
                 congregacao.setPastor(x);
@@ -187,6 +191,7 @@ public class CongregacaoDao {
                 congregacao.setCidade(rs.getString("cidade"));
                 congregacao.setBairro(rs.getString("bairro"));
                 congregacao.setCep(rs.getString("cep"));
+                congregacao.setLogo(rs.getBytes("logo"));
                 Membro m = new Membro(rs.getInt("idMembro"), rs.getString("nome"));
                 congregacao.setPastor(m);
                 lista.add(congregacao);

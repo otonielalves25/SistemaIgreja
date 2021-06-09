@@ -5,6 +5,7 @@
  */
 package dao;
 
+
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -12,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
-;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,12 +22,9 @@ import javax.swing.JOptionPane;
 import modelo.Congregacao;
 import modelo.Membro;
 
-
-
 public class MembroDao {
 
     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
 
     Connection con;
     PreparedStatement stm = null;
@@ -81,7 +77,7 @@ public class MembroDao {
             if (membro.getDataBatismo() != null) {
                 stm.setString(26, sdf.format(membro.getDataBatismo()));
             } else {
-                stm.setString(26, "");
+                stm.setString(26, null);
             }
 
             stm.setString(27, membro.getPastorBatismo());
@@ -92,7 +88,7 @@ public class MembroDao {
             if (membro.getDataInicio() != null) {
                 stm.setString(32, sdf.format(membro.getDataInicio()));
             } else {
-                stm.setString(32, "");
+                stm.setString(32, null);
             }
 
             stm.execute();
@@ -142,13 +138,24 @@ public class MembroDao {
             stm.setString(23, sdf.format(membro.getDataCadastro()));
             stm.setString(24, membro.getStatus());
             stm.setString(25, membro.getIgrejaBatismo());
-            stm.setString(26, sdf.format(membro.getDataBatismo()));
+
+            if (membro.getDataBatismo() != null) {
+                stm.setString(26, sdf.format(membro.getDataBatismo()));
+            } else {
+                stm.setString(26, null);
+            }
+
             stm.setString(27, membro.getPastorBatismo());
             stm.setString(28, membro.getSexo());
             stm.setString(29, membro.getEmail());
             stm.setInt(30, membro.getCongregacao().getIdCongregacao());
             stm.setString(31, membro.getDizimista());
-            stm.setString(32, sdf.format(membro.getDataInicio()));
+
+            if (membro.getDataInicio() != null) {
+                stm.setString(32, sdf.format(membro.getDataInicio()));
+            } else {
+                stm.setString(32, null);
+            }
             stm.setInt(33, membro.getIdMembro());
 
             stm.execute();
@@ -209,7 +216,178 @@ public class MembroDao {
                 men.setEstado(rs.getString("estado"));
                 men.setTelefone(rs.getString("telefone"));
                 men.setNaturalidade(rs.getString("naturalidade"));
-                
+
+                men.setCep(rs.getString("cep"));
+                men.setRg(rs.getString("rg"));
+                men.setCpf(rs.getString("cpf"));
+                men.setCelular(rs.getString("celular"));
+                men.setPai(rs.getString("pai"));
+                men.setMae(rs.getString("mae"));
+                men.setEstadoCivil(rs.getString("estadoCivil"));
+                men.setConjuge(rs.getString("conjuge"));
+                men.setCargo(rs.getString("cargo"));
+                men.setFoto(rs.getBytes("foto"));
+                men.setObservacao(rs.getString("observacao"));
+
+                if (rs.getString("dataCadastro") != null) {
+                    men.setDataCadastro(sdf.parse(rs.getString("dataCadastro")));
+                } else {
+                    men.setDataCadastro(null);
+                }
+
+                men.setStatus(rs.getString("status"));
+                men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
+
+                if (rs.getString("dataBatismo") != null) {   
+                    String da = rs.getString("dataBatismo");
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
+                } else {
+                    men.setDataBatismo(null);
+                }
+                men.setPastorBatismo(rs.getString("pastorBatismo"));
+                men.setSexo(rs.getString("sexo"));
+                men.setEmail(rs.getString("email"));
+                //-------------------------------------------
+                Congregacao congregacao = congregacaoDao.getCongregacao(rs.getInt("idCongregacao"));
+                //-------------------------------------------
+                men.setCongregacao(congregacao);
+                men.setDizimista(rs.getString("dizimista"));
+                if (rs.getString("dataInicioIgreja") != null) {
+                    men.setDataInicio(sdf.parse(rs.getString("dataInicioIgreja")));
+                } else {
+                    men.setDataInicio(null);
+                }
+
+            }
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao retornar 1 usuario Dao. " + e);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(MembroDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return men;
+    }
+    // RETORNA UMA BUSCAS //////////////////////////////////////////////////////
+
+    public Membro getMembroPorNome(String nome) {
+        Membro men = null;
+        String sql = "SELECT * from membro where nome= ?";
+
+        try {
+            con = conexao.ConexaoSqLite.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, nome);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                men = new Membro();
+                men.setIdMembro(rs.getInt("idMembro"));
+                men.setNome(rs.getString("nome"));
+                if (rs.getString("dataNascimento") != null) {
+                    men.setDataNascimento(sdf.parse(rs.getString("dataNascimento")));
+                } else {
+                    men.setDataNascimento(null);
+                }
+                men.setEscolaridade(rs.getString("escolaridade"));
+                men.setProfissao(rs.getString("profissao"));
+                men.setEndereco(rs.getString("endereco"));
+                men.setNumero(rs.getString("numero"));
+                men.setBairro(rs.getString("bairro"));
+                men.setCidade(rs.getString("cidade"));
+                men.setEstado(rs.getString("estado"));
+                men.setTelefone(rs.getString("telefone"));
+                men.setNaturalidade(rs.getString("naturalidade"));
+
+                men.setCep(rs.getString("cep"));
+                men.setRg(rs.getString("rg"));
+                men.setCpf(rs.getString("cpf"));
+                men.setCelular(rs.getString("celular"));
+                men.setPai(rs.getString("pai"));
+                men.setMae(rs.getString("mae"));
+                men.setEstadoCivil(rs.getString("estadoCivil"));
+                men.setConjuge(rs.getString("conjuge"));
+                men.setCargo(rs.getString("cargo"));
+                men.setFoto(rs.getBytes("foto"));
+                men.setObservacao(rs.getString("observacao"));
+
+                if (rs.getString("dataCadastro") != null) {
+                    men.setDataCadastro(sdf.parse(rs.getString("dataCadastro")));
+                } else {
+                    men.setDataCadastro(null);
+                }
+
+                men.setStatus(rs.getString("status"));
+                men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
+
+                if (rs.getString("dataBatismo") != null) {
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
+                } else {
+                    men.setDataBatismo(null);
+                }
+                men.setPastorBatismo(rs.getString("pastorBatismo"));
+                men.setSexo(rs.getString("sexo"));
+                men.setEmail(rs.getString("email"));
+                //-------------------------------------------
+                Congregacao congregacao = congregacaoDao.getCongregacao(rs.getInt("idCongregacao"));
+                //-------------------------------------------
+                men.setCongregacao(congregacao);
+                men.setDizimista(rs.getString("dizimista"));
+                if (rs.getString("dataInicioIgreja") != null) {
+                    men.setDataInicio(sdf.parse(rs.getString("dataInicioIgreja")));
+                } else {
+                    men.setDataInicio(null);
+                }
+
+            }
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao retornar 1 usuario Dao. " + e);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(MembroDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return men;
+    }
+
+    // RETORNA UMA BUSCAS //////////////////////////////////////////////////////
+    public Membro getMembroPorID(int codigo) {
+        Membro men = null;
+        String sql = "SELECT * from membro where idMembro= ?";
+
+        try {
+            con = conexao.ConexaoSqLite.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, codigo);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                men = new Membro();
+                men.setIdMembro(rs.getInt("idMembro"));
+                men.setNome(rs.getString("nome"));
+                if (rs.getString("dataNascimento") != null) {
+                    men.setDataNascimento(sdf.parse(rs.getString("dataNascimento")));
+                } else {
+                    men.setDataNascimento(null);
+                }
+                men.setEscolaridade(rs.getString("escolaridade"));
+                men.setProfissao(rs.getString("profissao"));
+                men.setEndereco(rs.getString("endereco"));
+                men.setNumero(rs.getString("numero"));
+                men.setBairro(rs.getString("bairro"));
+                men.setCidade(rs.getString("cidade"));
+                men.setEstado(rs.getString("estado"));
+                men.setTelefone(rs.getString("telefone"));
+                men.setNaturalidade(rs.getString("naturalidade"));
+
                 men.setCep(rs.getString("cep"));
                 men.setRg(rs.getString("rg"));
                 men.setCpf(rs.getString("cpf"));
@@ -269,7 +447,7 @@ public class MembroDao {
     public ArrayList<Membro> getListagem(String nome) {
         ArrayList<Membro> lista = new ArrayList<>();
         Membro men;
-        String sql = "SELECT * from membro where nome LIKE ?";
+        String sql = "SELECT * from membro where nome LIKE ? ORDER BY nome";
 
         try {
             con = conexao.ConexaoSqLite.getConnection();
@@ -293,7 +471,7 @@ public class MembroDao {
                 men.setBairro(rs.getString("bairro"));
                 men.setCidade(rs.getString("cidade"));
                 men.setEstado(rs.getString("estado"));
-                 men.setTelefone(rs.getString("telefone"));
+                men.setTelefone(rs.getString("telefone"));
                 men.setNaturalidade(rs.getString("naturalidade"));
                 men.setCep(rs.getString("cep"));
                 men.setRg(rs.getString("rg"));
@@ -316,10 +494,13 @@ public class MembroDao {
                 men.setStatus(rs.getString("status"));
                 men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
 
-                if (rs.getString("dataBatismo") != null) {
-                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
-                } else {
+                System.out.println("" + rs.getString("igrejaBatismo"));
+
+                if ("".equals(rs.getString("dataBatismo")) || rs.getString("dataBatismo") == null) {
+
                     men.setDataBatismo(null);
+                } else {
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
                 }
                 men.setPastorBatismo(rs.getString("pastorBatismo"));
                 men.setSexo(rs.getString("sexo"));
@@ -379,4 +560,131 @@ public class MembroDao {
         return codigo;
     }
 
+    // RETORNA ANIVERSARIANTES ///////////////////////////////////////////////////////
+    public ArrayList<Membro> getListagemAniversarantes(String nome, String mes) {
+        ArrayList<Membro> lista = new ArrayList<>();
+
+        //String mes = new SimpleDateFormat("MM").format(new Date());
+        Membro men;
+        String sql = "SELECT * from membro where nome LIKE ? AND dataNascimento like ? ORDER BY dataNascimento DESC";
+
+        try {
+            con = conexao.ConexaoSqLite.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, "%" + nome + "%");
+            stm.setString(2, "%-" + mes + "-%");
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                men = new Membro();
+                men.setIdMembro(rs.getInt("idMembro"));
+                men.setNome(rs.getString("nome"));
+                if (rs.getString("dataNascimento") != null) {
+                    men.setDataNascimento(sdf.parse(rs.getString("dataNascimento")));
+                } else {
+                    men.setDataNascimento(null);
+                }
+                men.setEscolaridade(rs.getString("escolaridade"));
+                men.setProfissao(rs.getString("profissao"));
+                men.setEndereco(rs.getString("endereco"));
+                men.setNumero(rs.getString("numero"));
+                men.setBairro(rs.getString("bairro"));
+                men.setCidade(rs.getString("cidade"));
+                men.setEstado(rs.getString("estado"));
+                men.setTelefone(rs.getString("telefone"));
+                men.setNaturalidade(rs.getString("naturalidade"));
+                men.setCep(rs.getString("cep"));
+                men.setRg(rs.getString("rg"));
+                men.setCpf(rs.getString("cpf"));
+                men.setCelular(rs.getString("celular"));
+                men.setPai(rs.getString("pai"));
+                men.setMae(rs.getString("mae"));
+                men.setEstadoCivil(rs.getString("estadoCivil"));
+                men.setConjuge(rs.getString("conjuge"));
+                men.setCargo(rs.getString("cargo"));
+                men.setFoto(rs.getBytes("foto"));
+                men.setObservacao(rs.getString("observacao"));
+
+                if (rs.getString("dataCadastro") != null) {
+                    men.setDataCadastro(sdf.parse(rs.getString("dataCadastro")));
+                } else {
+                    men.setDataCadastro(null);
+                }
+
+                men.setStatus(rs.getString("status"));
+                men.setIgrejaBatismo(rs.getString("igrejaBatismo"));
+
+                if (rs.getString("dataBatismo") != null) {
+                    men.setDataBatismo(sdf.parse(rs.getString("dataBatismo")));
+                } else {
+                    men.setDataBatismo(null);
+                }
+                men.setPastorBatismo(rs.getString("pastorBatismo"));
+                men.setSexo(rs.getString("sexo"));
+                men.setEmail(rs.getString("email"));
+                //-------------------------------------------
+                Congregacao congregacao = congregacaoDao.getCongregacao(rs.getInt("idCongregacao"));
+                //-------------------------------------------
+                men.setCongregacao(congregacao);
+                men.setDizimista(rs.getString("dizimista"));
+                if (rs.getString("dataInicioIgreja") != null) {
+                    men.setDataInicio(sdf.parse(rs.getString("dataInicioIgreja")));
+                } else {
+                    men.setDataInicio(null);
+                }
+
+                lista.add(men);
+
+            }
+
+            stm.close();
+            con.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao retornar lista membro Dao. " + e);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(MembroDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return lista;
+    }
+
+//    // RETORNA ID POR NOME ////////////////////////////////////////////////////
+//    public String getImageString(String codigo) {
+//        String imageDataString = null;
+//        String sql = "SELECT foto from membro where idMembro = ?";
+//
+//        try {
+//            con = conexao.ConexaoSqLite.getConnection();
+//            stm = con.prepareStatement(sql);
+//            stm.setString(1, codigo);
+//            rs = stm.executeQuery();
+//
+//            if (rs.next()) {
+//                if (rs.getBlob(1) != null) {
+//                    Blob blob = rs.getBlob(1);
+//                    if (blob == null) {
+//                        return null;
+//                    }else{
+//                    byte[] bytes = blob.getBytes(0L, (int) blob.length());
+//                    StringBuilder sb = new StringBuilder("data:image/jpeg;base64,");
+//                    sb.append(Base64.getEncoder().encodeToString(bytes));
+//                    imageDataString = sb.toString();
+//                    return imageDataString;
+//                    }
+//                }
+//
+//            }
+//
+//            stm.close();
+//            con.close();
+//
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, "Erro ao retornar 1 usuario Dao. " + e);
+//
+//        }
+//
+//        return imageDataString;
+//    }
 }

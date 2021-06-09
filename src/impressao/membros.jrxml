@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="143c073a-1703-4127-a0e0-42803a31bb05">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT * from membro]]>
+	</queryString>
+	<field name="idMembro" class="java.lang.Object"/>
+	<field name="nome" class="java.lang.Object"/>
+	<field name="dataNascimento" class="java.lang.Object"/>
+	<field name="escolaridade" class="java.lang.Object"/>
+	<field name="profissao" class="java.lang.Object"/>
+	<field name="endereco" class="java.lang.Object"/>
+	<field name="numero" class="java.lang.Object"/>
+	<field name="bairro" class="java.lang.Object"/>
+	<field name="cidade" class="java.lang.Object"/>
+	<field name="estado" class="java.lang.Object"/>
+	<field name="cep" class="java.lang.Object"/>
+	<field name="telefone" class="java.lang.Object"/>
+	<field name="naturalidade" class="java.lang.Object"/>
+	<field name="rg" class="java.lang.Object"/>
+	<field name="cpf" class="java.lang.Object"/>
+	<field name="celular" class="java.lang.Object"/>
+	<field name="pai" class="java.lang.Object"/>
+	<field name="mae" class="java.lang.Object"/>
+	<field name="estadoCivil" class="java.lang.Object"/>
+	<field name="conjuge" class="java.lang.Object"/>
+	<field name="cargo" class="java.lang.Object"/>
+	<field name="foto" class="java.lang.Object"/>
+	<field name="observacao" class="java.lang.Object"/>
+	<field name="dataCadastro" class="java.lang.Object"/>
+	<field name="status" class="java.lang.Object"/>
+	<field name="igrejaBatismo" class="java.lang.Object"/>
+	<field name="dataBatismo" class="java.lang.Object"/>
+	<field name="pastorBatismo" class="java.lang.Object"/>
+	<field name="sexo" class="java.lang.Object"/>
+	<field name="email" class="java.lang.Object"/>
+	<field name="dizimista" class="java.lang.Object"/>
+	<field name="idCongregacao" class="java.lang.Object"/>
+	<field name="dataInicioIgreja" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="132" y="0" width="341" height="34" uuid="d9a8ea39-f30e-4539-9dcb-b15ec31385d6"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lista de Membros]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="65" height="20" backcolor="#CCCCCC" uuid="269894f7-5882-4c46-9a80-605cff3ac318"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="65" y="0" width="283" height="20" backcolor="#CCCCCC" uuid="cad0ce09-6d95-4905-bf60-13868fe14d21"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="455" y="0" width="100" height="20" backcolor="#CCCCCC" uuid="2d9ee9d4-ebd7-4c66-8d87-3a5780fa207e"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="348" y="0" width="107" height="20" backcolor="#CCCCCC" uuid="fe26164c-e9ee-4849-ba33-1b343cd7c879"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="54" height="20" uuid="042e42f8-73e7-497d-be5c-4ad1920967fe"/>
+				<textFieldExpression><![CDATA[""+$F{idMembro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="0" width="185" height="20" uuid="20ea97d8-8aa0-4587-aa75-5398dc9265d1"/>
+				<textFieldExpression><![CDATA[""+$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="1" width="100" height="20" uuid="3f646f72-11ca-4286-86b2-9d0d68653bf3"/>
+				<textFieldExpression><![CDATA[""+$F{telefone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="348" y="1" width="100" height="20" uuid="7ceb6186-63f5-4bd7-b518-c0895fdd6cab"/>
+				<textFieldExpression><![CDATA[""+$F{cargo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="72" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="52" width="100" height="20" uuid="7718d1d2-aa0a-4dd0-a6b8-dc3552cb6e9c"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="52" width="100" height="20" uuid="873442fa-f6f3-4423-acfe-4ae851c6d3c3"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
