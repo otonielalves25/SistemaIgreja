@@ -7,7 +7,6 @@ package formularios;
 
 import dao.UsuarioDao;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
@@ -116,6 +115,7 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
             grelhaPesquisaUsuario.getColumnModel().getColumn(3).setMaxWidth(150);
         }
 
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/block.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +124,7 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
             }
         });
 
+        btnAlterar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/ruler_pencil.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +133,7 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
             }
         });
 
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/cross.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -191,7 +193,7 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
                     .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                     .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -203,9 +205,8 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -252,6 +253,8 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
+        
+
 
         if (grelhaPesquisaUsuario.getSelectedRowCount() > 0) {
             int linha = grelhaPesquisaUsuario.getSelectedRow();
@@ -259,7 +262,7 @@ public class FrmUsuarioConsulta extends javax.swing.JDialog {
             // verifica se pede ser instalado
             String usuario = (String) grelhaPesquisaUsuario.getValueAt(0, 1);
             if (usuario.equals("Admin")) {
-                JOptionPane.showMessageDialog(this, "Usuário não pode ser excluído.", "erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Usuário não pode ser alterado.", "erro", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // fim verifica se pede ser instalado

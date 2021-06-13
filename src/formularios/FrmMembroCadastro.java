@@ -8,7 +8,7 @@ package formularios;
 import dao.CongregacaoDao;
 import dao.ImpressaoDao;
 import dao.MembroDao;
-import impressao.Impressao;
+
 import java.awt.Graphics2D;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -190,6 +190,7 @@ public class FrmMembroCadastro extends javax.swing.JInternalFrame {
         lblFoto.setToolTipText("");
 
         btnSalvar.setBackground(new java.awt.Color(0, 102, 51));
+        btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/disk-black.png"))); // NOI18N
         btnSalvar.setText("SALVAR");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -644,6 +645,7 @@ public class FrmMembroCadastro extends javax.swing.JInternalFrame {
         jLabel29.setForeground(new java.awt.Color(0, 0, 153));
         jLabel29.setText("Observação:");
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/clear.png"))); // NOI18N
         jButton1.setText("Limpar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -652,6 +654,7 @@ public class FrmMembroCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/printmgr (6).png"))); // NOI18N
         jButton2.setText("Imprimir Carterinha");
         jButton2.addActionListener(new java.awt.event.ActionListener() {

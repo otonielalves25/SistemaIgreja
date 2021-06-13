@@ -14,6 +14,7 @@ public class Session {
     private static int idUsuario;
     private static String nomeUsuario;
     private static String previlegio;   
+    private static int idCongregacao;   
 
     /**
      * @return the idUsuario
@@ -61,6 +62,20 @@ public class Session {
         nomeUsuario = "";
         previlegio = "";
         idUsuario = 0;
+    }
+
+    /**
+     * @return the idCongregacao
+     */
+    public static int getIdCongregacao() {
+        return idCongregacao;
+    }
+
+    /**
+     * @param aIdCongregacao the idCongregacao to set
+     */
+    public static void setIdCongregacao(int aIdCongregacao) {
+        idCongregacao = aIdCongregacao;
     }
   
     

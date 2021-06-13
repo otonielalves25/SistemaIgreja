@@ -4,7 +4,9 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[SELECT * from membro]]>
+		<![CDATA[SELECT * from membro
+INNER JOIN congregacao
+ON membro.idCongregacao = congregacao.idCongregacao]]>
 	</queryString>
 	<field name="idMembro" class="java.lang.Object"/>
 	<field name="nome" class="java.lang.Object"/>
@@ -39,6 +41,9 @@
 	<field name="dizimista" class="java.lang.Object"/>
 	<field name="idCongregacao" class="java.lang.Object"/>
 	<field name="dataInicioIgreja" class="java.lang.Object"/>
+	<field name="nomeCongregacao" class="java.lang.Object"/>
+	<field name="idPastorResponsavel" class="java.lang.Object"/>
+	<field name="logo" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -51,6 +56,10 @@
 				</textElement>
 				<text><![CDATA[Lista de Membros]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="40" height="34" uuid="c2b6b54f-56c7-42fe-81d2-37c275c39af7"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte [])$F{logo})]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

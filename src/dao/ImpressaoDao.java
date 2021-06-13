@@ -31,19 +31,22 @@ public class ImpressaoDao {
     ResultSet rs;
     private int membro_id;
 
+    // IMPRIMIR RELATORIO DE MEMBROS //////////////////////////////////////////
     public void imprimirRelatorioMembros() {
 
         try {
-                   
+
+            String sql = "SELECT * from membro INNER JOIN congregacao "
+                    + "ON membro.idCongregacao = congregacao.idCongregacao";
 
             con = conexao.ConexaoSqLite.getConnection();
-            stm = con.prepareStatement("SELECT * FROM membro");
+            stm = con.prepareStatement(sql);
             rs = stm.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ImpressaoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        InputStream caminhoRelJasper = this.getClass().getResourceAsStream("/impressao/membros.jasper");        
+        InputStream caminhoRelJasper = this.getClass().getResourceAsStream("/impressao/membros.jasper");
         JRResultSetDataSource result = new JRResultSetDataSource(rs);
 
         try {
@@ -58,18 +61,55 @@ public class ImpressaoDao {
 
     }
 
+    // IMPRIMIR CARTERINHA DE MEMBRO /////////////////////////////////////////////
     public void imprimirCarterinha() {
 
         try {
 
+            String sql = "SELECT c.nomeCongregacao, m.nome, c.bairro, m.dataCadastro, m.cargo, m.foto, m.idMembro, c.logo "
+                    + "FROM membro as m "
+                    + "INNER JOIN congregacao as c "
+                    + "ON m.idCongregacao = c.idCongregacao WHERE idMembro =" + getMembro_id();
+
             con = conexao.ConexaoSqLite.getConnection();
-            stm = con.prepareStatement("SELECT * FROM membro WHERE idMembro =" + getMembro_id());
+            stm = con.prepareStatement(sql);
             rs = stm.executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ImpressaoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         InputStream caminhoRelJasper = this.getClass().getResourceAsStream("/impressao/carterinha.jasper");
+        JRResultSetDataSource result = new JRResultSetDataSource(rs);
+
+        try {
+            JasperPrint impressao = JasperFillManager.fillReport(caminhoRelJasper, null, result);
+            JasperViewer view = new JasperViewer(impressao, false);
+            view.setVisible(true);
+            view.setAutoRequestFocus(true);
+            //JasperPrintManager.printPage(impressao, 0, true); // FALSE abre para salvar / TRUE abre p/impressão
+
+        } catch (JRException e) {
+        }
+
+    }
+    // IMPRIMIR CARTA DE MEMBRO ////////////////////////////////////////////
+
+    public void imprimirCarta() {
+
+        try {
+
+            String sql = "SELECT * FROM membro "
+                    + "INNER JOIN congregacao "
+                    + "ON membro.idCongregacao = congregacao.idCongregacao WHERE idMembro =" + getMembro_id();
+
+            con = conexao.ConexaoSqLite.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ImpressaoDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        InputStream caminhoRelJasper = this.getClass().getResourceAsStream("/impressao/Carta.jasper");
         JRResultSetDataSource result = new JRResultSetDataSource(rs);
 
         try {

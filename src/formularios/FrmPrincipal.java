@@ -6,6 +6,10 @@
 package formularios;
 
 import dao.ImpressaoDao;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import modelo.Session;
 import util.CentralizarFormulario;
 
@@ -23,7 +27,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
         initComponents();
         //PEGA VALOR DA SESSÃO
         lblUsuarioLogado.setText(Session.getNomeUsuario());
+       corrigirFundo();
+    }
+    
+    private void corrigirFundo(){        
+               
+	Toolkit tk = Toolkit.getDefaultToolkit();
+        Dimension dimensao = tk.getScreenSize();        
+        int larguraTela = dimensao.width;
+        int alturaTela = dimensao.height;         
+        lblFundo.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/fundo.jpg")).getImage().getScaledInstance(larguraTela, alturaTela, Image.SCALE_SMOOTH)));
 
+        
     }
 
     /**
@@ -43,7 +58,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         lblUsuario = new javax.swing.JLabel();
         lblUsuarioLogado = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblFundo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
@@ -68,7 +83,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(153, 0, 51));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/icones 24x24 (135).png"))); // NOI18N
@@ -151,21 +166,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/fundo.jpg"))); // NOI18N
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        lblFundo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/fundo.jpg"))); // NOI18N
+        lblFundo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        jDesktopPane.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane.setLayer(lblFundo, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPaneLayout = new javax.swing.GroupLayout(jDesktopPane);
         jDesktopPane.setLayout(jDesktopPaneLayout);
         jDesktopPaneLayout.setHorizontalGroup(
             jDesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblFundo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jDesktopPaneLayout.setVerticalGroup(
             jDesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblFundo)
         );
 
         jMenuBar1.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
@@ -343,8 +358,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jDesktopPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -506,7 +521,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     public static final javax.swing.JDesktopPane jDesktopPane = new javax.swing.JDesktopPane();
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -528,6 +542,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblFundo;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JLabel lblUsuarioLogado;
     // End of variables declaration//GEN-END:variables

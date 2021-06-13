@@ -4,43 +4,19 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[select * from membro]]>
+		<![CDATA[SELECT c.nomeCongregacao, m.nome, c.bairro, m.dataCadastro, m.cargo, m.foto, m.idMembro,c.logo
+FROM membro as m
+INNER JOIN congregacao as c
+ON m.idCongregacao = c.idCongregacao]]>
 	</queryString>
-	<field name="idMembro" class="java.lang.Object"/>
+	<field name="nomeCongregacao" class="java.lang.Object"/>
 	<field name="nome" class="java.lang.Object"/>
-	<field name="dataNascimento" class="java.lang.Object"/>
-	<field name="escolaridade" class="java.lang.Object"/>
-	<field name="profissao" class="java.lang.Object"/>
-	<field name="endereco" class="java.lang.Object"/>
-	<field name="numero" class="java.lang.Object"/>
 	<field name="bairro" class="java.lang.Object"/>
-	<field name="cidade" class="java.lang.Object"/>
-	<field name="estado" class="java.lang.Object"/>
-	<field name="cep" class="java.lang.Object"/>
-	<field name="telefone" class="java.lang.Object"/>
-	<field name="naturalidade" class="java.lang.Object"/>
-	<field name="rg" class="java.lang.Object"/>
-	<field name="cpf" class="java.lang.Object"/>
-	<field name="celular" class="java.lang.Object"/>
-	<field name="pai" class="java.lang.Object"/>
-	<field name="mae" class="java.lang.Object"/>
-	<field name="estadoCivil" class="java.lang.Object"/>
-	<field name="conjuge" class="java.lang.Object"/>
-	<field name="cargo" class="java.lang.Object"/>
-	<field name="foto" class="java.lang.Object">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="observacao" class="java.lang.Object"/>
 	<field name="dataCadastro" class="java.lang.Object"/>
-	<field name="status" class="java.lang.Object"/>
-	<field name="igrejaBatismo" class="java.lang.Object"/>
-	<field name="dataBatismo" class="java.lang.Object"/>
-	<field name="pastorBatismo" class="java.lang.Object"/>
-	<field name="sexo" class="java.lang.Object"/>
-	<field name="email" class="java.lang.Object"/>
-	<field name="dizimista" class="java.lang.Object"/>
-	<field name="idCongregacao" class="java.lang.Object"/>
-	<field name="dataInicioIgreja" class="java.lang.Object"/>
+	<field name="cargo" class="java.lang.Object"/>
+	<field name="foto" class="java.lang.Object"/>
+	<field name="idMembro" class="java.lang.Object"/>
+	<field name="logo" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -49,13 +25,6 @@
 			<rectangle radius="10">
 				<reportElement x="0" y="0" width="239" height="132" backcolor="#990000" uuid="11be5f2c-2d6e-4e5e-955a-1ecde0610c27"/>
 			</rectangle>
-			<staticText>
-				<reportElement mode="Transparent" x="19" y="4" width="207" height="20" forecolor="#FFFFFF" uuid="8f135d1e-41de-42c7-81bf-73d69ecffb40"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IGRAJ PENTECOSTA]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="24" width="239" height="1" uuid="52356997-a7b1-4d17-b5ce-2119506372e5"/>
 			</line>
@@ -63,18 +32,98 @@
 				<reportElement x="0" y="25" width="239" height="89" uuid="17e383c9-5e3d-4905-bd4a-d737afb9b6aa"/>
 			</rectangle>
 			<image scaleImage="RealSize">
-				<reportElement x="0" y="25" width="74" height="89" uuid="5d86ba9b-d144-474f-90b1-f39cbb9ae896"/>
+				<reportElement x="4" y="29" width="55" height="78" uuid="5d86ba9b-d144-474f-90b1-f39cbb9ae896"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte [])$F{foto})]]></imageExpression>
 			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="133" y="98" width="100" height="13" forecolor="#000000" uuid="5e50d17b-a8eb-47d7-9a73-ac8856834a1c"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 			<textField>
-				<reportElement x="84" y="35" width="100" height="20" uuid="11a2ed6b-ccd6-4dc3-8783-ce0209899a07"/>
+				<reportElement x="8" y="117" width="227" height="11" forecolor="#FFFFFF" uuid="f7124852-557a-47e5-8f66-a7d312616f38"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nomeCongregacao}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="249" y="1" width="239" height="132" backcolor="#990000" uuid="f024fa7f-ebc2-4f9b-9506-556ecdf16d91"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="249" y="10" width="239" height="111" uuid="05f5df7f-2673-43e7-b1cc-1deaef964337"/>
+			</rectangle>
+			<textField>
+				<reportElement x="255" y="92" width="165" height="15" uuid="bff41671-5fb2-499e-b315-568b9bf6878f"/>
 				<box>
-					<topPen lineWidth="1.0" lineStyle="Dashed"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Double"/>
+					<leftPen lineWidth="0.0" lineStyle="Double"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
-				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Bairro: " +$F{bairro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="77" width="165" height="15" uuid="787cb5f6-1317-4e29-b0a0-412d8349d90f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Double"/>
+					<leftPen lineWidth="0.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Congrega desde: " +$F{dataCadastro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="57" width="165" height="15" uuid="942ecc94-86d8-4aad-9e49-677492005f27"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Double"/>
+					<leftPen lineWidth="0.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cargo: "+$F{cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="36" width="165" height="15" uuid="11a2ed6b-ccd6-4dc3-8783-ce0209899a07"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Double"/>
+					<leftPen lineWidth="0.0" lineStyle="Double"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nome: " + $F{nome}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="255" y="24" width="50" height="43" uuid="870e9ca8-95a0-4031-a223-3c9d51e2fbde"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.loadImage ((byte [])$F{logo})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="70" y="6" width="113" height="18" forecolor="#FFFFFF" uuid="6891e6e1-973c-427a-be61-b2e107ec939e"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cartão de Membro]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="97" width="100" height="11" forecolor="#000000" uuid="98305c2b-24d6-45b2-bcaf-238f86bf673c"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Código: "+$F{idMembro}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

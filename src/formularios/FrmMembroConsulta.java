@@ -9,14 +9,11 @@ import dao.ImpressaoDao;
 import dao.MembroDao;
 import dao.UsuarioDao;
 import static formularios.FrmPrincipal.jDesktopPane;
-import impressao.Impressao;
-import java.io.FileNotFoundException;
+
 import java.text.DateFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -82,6 +79,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
         lblQuantidade = new javax.swing.JLabel();
         btnImprimir = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -150,6 +148,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
             grelhaPesquisa.getColumnModel().getColumn(6).setMinWidth(100);
         }
 
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/block.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +157,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
             }
         });
 
+        btnAlterar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/ruler_pencil.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -166,6 +166,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
             }
         });
 
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/cross.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -181,6 +182,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
         lblQuantidade.setForeground(new java.awt.Color(51, 0, 153));
         lblQuantidade.setText("0 registros localizados.");
 
+        btnImprimir.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/printmgr (6).png"))); // NOI18N
         btnImprimir.setText("Imprimir - Todos");
         btnImprimir.addActionListener(new java.awt.event.ActionListener() {
@@ -189,11 +191,21 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/printmgr (6).png"))); // NOI18N
         jButton3.setText("Imprimir Carterinha");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/printmgr (6).png"))); // NOI18N
+        jButton4.setText("Imprimir Carta");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -216,7 +228,9 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
                         .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblQuantidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,7 +262,8 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
                         .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -349,7 +364,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
 
     private void grelhaPesquisaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_grelhaPesquisaMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount()==2){
+        if (evt.getClickCount() == 2) {
             abrirAlteracao();
         }
     }//GEN-LAST:event_grelhaPesquisaMouseClicked
@@ -358,22 +373,34 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
         // TODO add your handling code here:
         ImpressaoDao impressaoDao = new ImpressaoDao();
         impressaoDao.imprimirRelatorioMembros();
-        
+
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         // TODO add your handling code here:
-         
-        if(grelhaPesquisa.getSelectedRowCount() == 1){
+        // TODO add your handling code here:
+
+        if (grelhaPesquisa.getSelectedRowCount() == 1) {
             ImpressaoDao imp = new ImpressaoDao();
             int codigo = (int) grelhaPesquisa.getValueAt(grelhaPesquisa.getSelectedRow(), 0);
             imp.setMembro_id(codigo);
             imp.imprimirCarterinha();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Selecione uma linha para impressão.", "ERRO", JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+               if (grelhaPesquisa.getSelectedRowCount() == 1) {
+            ImpressaoDao imp = new ImpressaoDao();
+            int codigo = (int) grelhaPesquisa.getValueAt(grelhaPesquisa.getSelectedRow(), 0);
+            imp.setMembro_id(codigo);
+            imp.imprimirCarta();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha para impressão.", "ERRO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -450,6 +477,7 @@ public class FrmMembroConsulta extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;

@@ -113,6 +113,7 @@ public class FrmUsuarioCadastro extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 69, 153, 144));
 
         btnSalvar.setBackground(new java.awt.Color(255, 255, 255));
+        btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/disk-black.png"))); // NOI18N
         btnSalvar.setText("SALVAR");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -122,6 +123,7 @@ public class FrmUsuarioCadastro extends javax.swing.JInternalFrame {
         });
         jPanel1.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(503, 219, 127, -1));
 
+        btnPesquisa.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/zoom.png"))); // NOI18N
         btnPesquisa.setText("PESQUISAR");
         btnPesquisa.addActionListener(new java.awt.event.ActionListener() {

@@ -162,6 +162,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
             grelhaIgrejas.getColumnModel().getColumn(2).setMaxWidth(300);
         }
 
+        btnNovo.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/add_page.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +171,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/block.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -178,6 +180,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        btnLimpar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/clear.png"))); // NOI18N
         btnLimpar.setText("Limpar");
         btnLimpar.setPreferredSize(new java.awt.Dimension(103, 33));
@@ -187,6 +190,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAlterar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/ruler_pencil.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -195,14 +199,17 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
             }
         });
 
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/cross.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
             }
         });
 
+        btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/disk-black.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -223,7 +230,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
 
         janelaFoto.setBackground(new java.awt.Color(204, 204, 204));
         janelaFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        janelaFoto.setText("LOGO");
+        janelaFoto.setText("INSERIR LOGO");
         janelaFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         janelaFoto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -406,15 +413,18 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
         txtCep.setText("");
         txtCep.setText(cong.getCep());
         btnAlterar.setEnabled(true);
-        btnExcluir.setEnabled(true);
-        if(cong.getLogo() != null){
-        ManipulaImagem.exibirImagemNoLabel(cong.getLogo(), janelaFoto);
-        janelaFoto.setText("");
-        }else{
+        if (grelhaIgrejas.getRowCount() > 1) {
+            btnExcluir.setEnabled(true);
+        }
+
+        if (cong.getLogo() != null) {
+            ManipulaImagem.exibirImagemNoLabel(cong.getLogo(), janelaFoto);
+            janelaFoto.setText("");
+        } else {
             janelaFoto.setIcon(new ImageIcon());
             janelaFoto.setText("SEM LOGO");
         }
-        
+
 
     }//GEN-LAST:event_grelhaIgrejasMouseClicked
 
@@ -439,6 +449,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
         // 0 - SIM | 1 - NÃO | 2 - CANCELAR | -1 - FECHOU A TELA
         switch (resposta) {
             case 0:
+                
                 if (congregacaoDao.excluir(Integer.parseInt(txtCodigo.getText()))) {
                     carregaTabela();
                     JOptionPane.showMessageDialog(null, "Excluido com Sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -508,9 +519,9 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //PEGA DUPLO CLIQUE
         int click;
-        if(novo){
+        if (novo) {
             click = 1;
-        }else{
+        } else {
             click = 2;
         }
         if (evt.getClickCount() == click) {
@@ -531,7 +542,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
                 }
             } catch (HeadlessException e) {
                 janelaFoto.setIcon(new ImageIcon());
-                janelaFoto.setText("LOGO");
+                janelaFoto.setText("INSERIR LOGO");
             }        // T
 
         }
@@ -548,7 +559,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
         txtTelefone.setText("");
         cboPastor.setSelectedIndex(0);
         janelaFoto.setIcon(new ImageIcon());
-        janelaFoto.setText("LOGO");
+        janelaFoto.setText("INSERIR LOGO");
     }
 
     // HABILITADO E DESABILITADO ///////////////////////////////////////////////
@@ -593,7 +604,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
     private void botaoInicio() {
         btnAlterar.setEnabled(!true);
         btnCancelar.setEnabled(true);
-        btnExcluir.setEnabled(!true);
+        //btnExcluir.setEnabled(!true);
         btnLimpar.setEnabled(true);
         btnNovo.setEnabled(true);
         btnSalvar.setEnabled(!true);
@@ -604,7 +615,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
     private void botaoNovo() {
         btnAlterar.setEnabled(!true);
         btnCancelar.setEnabled(true);
-        btnExcluir.setEnabled(!true);
+        //btnExcluir.setEnabled(!true);
         btnLimpar.setEnabled(true);
         btnNovo.setEnabled(true);
         btnSalvar.setEnabled(true);
@@ -615,7 +626,7 @@ public class FrmCongregacaoCadastro extends javax.swing.JInternalFrame {
     private void botaoAlterar() {
         btnAlterar.setEnabled(!true);
         btnCancelar.setEnabled(true);
-        btnExcluir.setEnabled(!true);
+        //btnExcluir.setEnabled(!true);
         btnLimpar.setEnabled(true);
         btnNovo.setEnabled(true);
         btnSalvar.setEnabled(true);
